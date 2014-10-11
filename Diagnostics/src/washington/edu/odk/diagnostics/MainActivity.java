@@ -7,22 +7,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
+import android.provider.MediaStore; 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-
+/** 
+ * This is the home page of the MRSA Diagnostics app. 
+ * It gives the user two options to select a photo to process: 
+ * take a new photo or choose an old photo.
+ * @author Krittika D'Silva (krittika.dsilva@gmail.com)
+ */
 public class MainActivity extends ActionBarActivity {
 	private static final String TAG = "MainActivity";
 
-	/** */
+	/** Opens the camera's gallery so that the user 
+	 * can select an image of a test to process. */
 	private Button mGallery;
 
-	/** */	
+	/** Opens the camera so that the user can take 
+	 * an image of a test to analyze*/	
 	private Button mCamera;  
 	
 	/** The action code we use in our intent, 
@@ -37,18 +43,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-
+         
         mGallery = (Button) findViewById(R.id.gallery);
         mCamera = (Button) findViewById(R.id.camera);
-        
-        //this.getString("CHOSE")
+         
         mGallery.setOnClickListener(new OnClickListener() { 
 			@Override
 			public void onClick(View arg) { 
 				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 				startActivityForResult(Intent.createChooser(i,
-						"pick a photo"), SELECT_PICTURE); 
+						MainActivity.this.getString(R.string.select)), SELECT_PICTURE); 
 			} 
 		}); 
         
@@ -60,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
 		}); 
     }
 
-    /**  */
+    /** Called after an image has been chosen. */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data); 
 		if (resultCode == RESULT_OK) { 
@@ -78,40 +82,19 @@ public class MainActivity extends ActionBarActivity {
 		} 
 	}
 	
-	/**   */ 
+	/** Minimizes size of the bitmap so that it can be displayed in the app. */ 
 	private Bitmap halfSize(Bitmap input) { 
 		int height = input.getHeight();
 		int width = input.getWidth();  
 		return Bitmap.createScaledBitmap(input,  width/2, height/2, false);
 	}
 
-	/**  */
+	/** Given a uri, returns the absolute path as a string. */
 	public String getPath(Uri uri) {
 		String[] projection = { MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(uri, projection, null, null, null);
 		int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 		cursor.moveToFirst();
 		return cursor.getString(column_index);
-	}
-    
-    
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	} 
 }

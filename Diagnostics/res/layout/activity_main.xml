@@ -22,24 +22,27 @@
 	    <Button
 	        android:id="@+id/gallery"
 	        style="?android:attr/buttonStyleSmall"
+	        android:padding="5dip"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="100dip"
 	        android:layout_weight="1"
 	        android:textSize="25sp"
 	        android:layout_margin="5dip"
 	        android:background="@drawable/button_config"
-	        android:text="Yes" />
+	        android:text="@string/gallery" />
 	    
 	  	<Button
 	        android:id="@+id/camera"
 	        style="?android:attr/buttonStyleSmall"
+	        android:padding="5dip"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="100dip"
 	        android:layout_weight="1"
-	        android:textSize="22sp"
+	        android:textSize="25sp"
 	        android:layout_margin="5dip"
 	        android:background="@drawable/button_config"
-	        android:text="No" />   
+	        android:text="@string/camera" />   
 	  
     </LinearLayout> 
+    
 </LinearLayout>
