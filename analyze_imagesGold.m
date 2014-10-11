@@ -38,8 +38,8 @@ testStrip3 = [740,155,210,85];
 testStrip4 = [740,250,210,85];
 % testStrip5 = [760,240,210,85];
 
-fullstrip1 = [470,50,110,325];
-fullstrip2 = [790,50,110,325];
+fullstrip1 = [450,50,130,325];
+fullstrip2 = [780,50,130,325];
 
 % Point at which we're calculating the slope & area under the curve
 minValue = 0.97;

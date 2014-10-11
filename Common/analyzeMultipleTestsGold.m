@@ -128,10 +128,10 @@ if (length(centers) > 4)
         rectangle('Position', qrCode, 'LineWidth', 3, 'EdgeColor', 'r')
         
         % Tests
-        rectangle('Position', testStrip1, 'LineWidth', 3, 'EdgeColor', 'r')
-        rectangle('Position', testStrip2, 'LineWidth', 3, 'EdgeColor', 'r')
-        rectangle('Position', testStrip3, 'LineWidth', 3, 'EdgeColor', 'r')
-        rectangle('Position', testStrip4, 'LineWidth', 3, 'EdgeColor', 'r')
+%         rectangle('Position', testStrip1, 'LineWidth', 3, 'EdgeColor', 'r')
+%         rectangle('Position', testStrip2, 'LineWidth', 3, 'EdgeColor', 'r')
+%         rectangle('Position', testStrip3, 'LineWidth', 3, 'EdgeColor', 'r')
+%         rectangle('Position', testStrip4, 'LineWidth', 3, 'EdgeColor', 'r')
 %         rectangle('Position', testStrip5, 'LineWidth', 3, 'EdgeColor', 'r')
         
        %Full strip ROI        
@@ -145,29 +145,35 @@ if (length(centers) > 4)
         figure(20)
         subplot(2,1,1)
         plot(1:length(avgNormalizedFull1), avgNormalizedFull1, xfit2, polyval(Coeffs1,xfit2), 'r')
+        title('Left Test Strip')
+        xlabel('Pixel Position (top to bottom)')
+        ylabel('Normalized Intensity')
         subplot(2,1,2)
         plot(1:length(avgNormalizedFull2), avgNormalizedFull2, xfit2, polyval(Coeffs2,xfit2), 'r')
+        title('Right Test Strip')
+        xlabel('Pixel Position (top to bottom)')
+        ylabel('Normalized Intensity')
         
         % Plot images of 5 tests
-        processedImage2 =  figure(10 + i * nfiles);
-        title_2 = strcat('Transformed Image: ',strrep(currentfilename,'_','\_'));
-        suptitle(title_2);
-        hold on
-        subplot(3,2,[1,2])
-        imshow(resizedImage);
-        subplot(3,2,3)
-        imshow(firstRectangle)
-        subplot(3,2,5)
-        imshow(secondRectangle)
-        subplot(3,2,4)
-        imshow(thirdRectangle)
-        subplot(3,2,6)
-        imshow(fourthRectangle)
+%         processedImage2 =  figure(10 + i * nfiles);
+%         title_2 = strcat('Transformed Image: ',strrep(currentfilename,'_','\_'));
+%         suptitle(title_2);
+%         hold on
+%         subplot(3,2,[1,2])
+%         imshow(resizedImage);
+%         subplot(3,2,3)
+%         imshow(firstRectangle)
+%         subplot(3,2,5)
+%         imshow(secondRectangle)
+%         subplot(3,2,4)
+%         imshow(thirdRectangle)
+%         subplot(3,2,6)
+%         imshow(fourthRectangle)
 %         subplot(4,2,6)
 %         imshow(fifthRectangle)
         
-        strFirst = strcat('ProcessedImg_', '2_', currentfilename);
-        saveas(processedImage2,fullfile(strcat(dirProcessedImages, '\Location_Tests'), strFirst),'jpg');
+%         strFirst = strcat('ProcessedImg_', '2_', currentfilename);
+%         saveas(processedImage2,fullfile(strcat(dirProcessedImages, '\Location_Tests'), strFirst),'jpg');
         
 %             % Plot test strip intensities
 %             averageIntensities = figure(10 + i * nfiles);
@@ -190,26 +196,26 @@ if (length(centers) > 4)
         %     avgIntensitiesStr = strcat('ProcessedImg_', '3_', currentfilename);
         %     saveas(averageIntensities,fullfile(dirProcessedImages, avgIntensitiesStr),'jpg');
         
-        combinedStr = strcat('Transformed Image - Normalized Test Strip Intensity: ',strrep(currentfilename,'_','\_'));
+%         combinedStr = strcat('Transformed Image - Normalized Test Strip Intensity: ',strrep(currentfilename,'_','\_'));
         %plot profiles of normalized values and fitted line
-        processedImage = figure(11 + i * nfiles);
-        suptitle(combinedStr);
-        hold on
-        subplot(3,2,[1,2])
-        imshow(resizedImage);
-        subplot(3,2,3)
-        plot(1:length(avgIntensityOne),avgNormalizedOne, 'r') %xfit,polyval(Coeffs1,xfit),'r')
-        subplot(3,2,5)
-        plot(1:length(avgIntensityTwo),avgNormalizedTwo,'r') %xfit,polyval(Coeffs2,xfit),'r')
-        subplot(3,2,4)
-        plot(1:length(avgIntensityThree),avgNormalizedThree, 'r') % xfit,polyval(Coeffs3,xfit),'r')
-        subplot(3,2,6)
-        plot(1:length(avgIntensityFour),avgNormalizedFour, 'r') % xfit,polyval(Coeffs4,xfit),'r')
-%         subplot(4,2,6)
-%         plot(1:length(avgIntensityFive), avgNormalizedFive)
+%         processedImage = figure(11 + i * nfiles);
+%         suptitle(combinedStr);
+%         hold on
+%         subplot(3,2,[1,2])
+%         imshow(resizedImage);
+%         subplot(3,2,3)
+%         plot(1:length(avgIntensityOne),avgNormalizedOne, 'r') %xfit,polyval(Coeffs1,xfit),'r')
+%         subplot(3,2,5)
+%         plot(1:length(avgIntensityTwo),avgNormalizedTwo,'r') %xfit,polyval(Coeffs2,xfit),'r')
+%         subplot(3,2,4)
+%         plot(1:length(avgIntensityThree),avgNormalizedThree, 'r') % xfit,polyval(Coeffs3,xfit),'r')
+%         subplot(3,2,6)
+%         plot(1:length(avgIntensityFour),avgNormalizedFour, 'r') % xfit,polyval(Coeffs4,xfit),'r')
+% %         subplot(4,2,6)
+% %         plot(1:length(avgIntensityFive), avgNormalizedFive)
         
-        normalizedStr = strcat('ProcessedImg_','4_', currentfilename);
-        saveas(processedImage,fullfile(strcat(dirProcessedImages, '\Normalized_Tests'), normalizedStr),'jpg');
+%         normalizedStr = strcat('ProcessedImg_','4_', currentfilename);
+%         saveas(processedImage,fullfile(strcat(dirProcessedImages, '\Normalized_Tests'), normalizedStr),'jpg');
         
         outputarray = [black_CS, white_CS, minOne, minTwo, minThree, minFour, minNorm1, minNorm2, minNorm3, minNorm4, slope_up_1, slope_up_2, slope_up_3, slope_up_4, slope_down_1,slope_down_2,slope_down_3,slope_down_4, sum_under_curve_1, sum_under_curve_2, sum_under_curve_3, sum_under_curve_4];
         fprintf(outid, '%s', currentfilename);
@@ -242,8 +248,14 @@ if (length(centers) > 4)
     figure(21)
         subplot(2,1,1)
         plot(xfit3, NewAvgIntensities1)
+        title('Left Test Strip')
+        xlabel('Pixel Position (top to bottom)')
+        ylabel('Normalized Intensity')
         subplot(2,1,2)
         plot(xfit3, NewAvgIntensities2)
+        title('Right Test Strip')
+        xlabel('Pixel Position (top to bottom)')
+        ylabel('Normalized Intensity')
         
     ROINew1 = [NewAvgIntensities1(1:125)', NewAvgIntensities1(240:end)'];
     ROINew2 = [NewAvgIntensities2(1:125)', NewAvgIntensities2(240:end)'];
@@ -253,12 +265,28 @@ if (length(centers) > 4)
     %New cutoff set to 3 Stand. Devs from 0
     SD1 = 3*SDNewAvgIntensities1;
     SD2 = 3*SDNewAvgIntensities2;
-        
-    TestA = find(NewAvgIntensities1(1:190) > SD1);
-    TestB = find(NewAvgIntensities2(1:190) > SD2);
     
+    TestAControl = find(NewAvgIntensities1(125:190) > SD1);
+    TestBControl = find(NewAvgIntensities2(125:190) > SD1);
+    TestA = find(NewAvgIntensities1(190:260) > SD1);
+    TestB = find(NewAvgIntensities2(190:260) > SD2);
+    
+       
     SumTestA = sum(NewAvgIntensities1(TestA));
     SumTestB = sum(NewAvgIntensities2(TestB));
+      
+    figure(22)
+        subplot(2,1,1)
+        hold on
+        plot(xfit3, NewAvgIntensities1, xfit3, SD1, '-')
+        title('Left Test Strip')
+        xlabel('Pixel Position (top to bottom)')
+        ylabel('Normalized Intensity')
+        subplot(2,1,2)
+        plot(xfit3, NewAvgIntensities2, xfit3, SD2, '-')
+        title('Right Test Strip')
+        xlabel('Pixel Position (top to bottom)')
+        ylabel('Normalized Intensity')
     
     if SumTestA > 0 && SumTestB > 0
         msgbox('Channels A and B positive','Diagnosis')
