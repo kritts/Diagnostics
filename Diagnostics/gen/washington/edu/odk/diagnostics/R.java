@@ -1079,8 +1079,6 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int button_config=0x7f020057;
         public static final int ic_launcher=0x7f020058;
-        public static final int map=0x7f020059;
-        public static final int map2=0x7f02005a;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1198,10 +1196,12 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
         public static final int activity_main=0x7f030018;
-        public static final int support_simple_spinner_dropdown_item=0x7f030019;
+        public static final int activity_process_image=0x7f030019;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
+        public static final int process_image=0x7f0c0001;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1245,12 +1245,14 @@ containing a value of this type.
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
         public static final int action_settings=0x7f0a0011;
-        /**   Home page 
+        /**  Home page 
          */
         public static final int app_name=0x7f0a000d;
         public static final int camera=0x7f0a0010;
         public static final int gallery=0x7f0a000e;
+        public static final int hello_world=0x7f0a0013;
         public static final int select=0x7f0a000f;
+        public static final int title_activity_process_image=0x7f0a0012;
     }
     public static final class style {
         /** 
