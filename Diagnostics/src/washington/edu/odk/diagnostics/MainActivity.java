@@ -1,5 +1,8 @@
 package washington.edu.odk.diagnostics;
 
+import java.io.File;
+import java.util.Calendar; 
+
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore; 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +39,9 @@ public class MainActivity extends ActionBarActivity {
 	 *  this way we know we're looking at the response from our own action.  */
 	private static final int SELECT_PICTURE = 1;
 	
+	/** */
+	private static final int TAKE_PICTURE = 2;
+	 
 	/** Used to show the users chosen image.*/
 	private Bitmap bitmap = null;
 	    
@@ -59,7 +66,24 @@ public class MainActivity extends ActionBarActivity {
         mCamera.setOnClickListener(new OnClickListener() { 
 			@Override
 			public void onClick(View arg) { 
-				// Open up camera. 
+				Calendar c = Calendar.getInstance();
+				
+				// Name of image file is the data and then time the image was taken. 
+				String date = c.get(Calendar.YEAR) + "_"+ c.get(Calendar.MONTH)
+						+ "_" + c.get(Calendar.DAY_OF_MONTH);
+				String time = c.get(Calendar.HOUR_OF_DAY) + "_" 
+						+ c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
+
+				String image = "/" + date + "__" + time;
+				 
+				image += ".jpg"; 
+				 
+				 
+			    Uri imageUri = Uri.fromFile(new File(image));
+				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                //intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivityForResult(intent, TAKE_PICTURE);
 			}  
 		}); 
     }
@@ -69,6 +93,7 @@ public class MainActivity extends ActionBarActivity {
 		super.onActivityResult(requestCode, resultCode, data); 
 		if (resultCode == RESULT_OK) { 
 			if (requestCode == SELECT_PICTURE) { 
+				Log.e(TAG, "Image selected");
 				Uri selectedImageUri = data.getData();
 				String selectedImagePath = getPath(selectedImageUri);
 
@@ -78,6 +103,9 @@ public class MainActivity extends ActionBarActivity {
 						bitmap = halfSize(bitmap);
 					} 
 				} 
+			} else if(requestCode == TAKE_PICTURE) {
+				Log.e(TAG, "Image taken");
+			
 			}
 		} 
 	}

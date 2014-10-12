@@ -28,7 +28,7 @@
 	        android:layout_weight="1"
 	        android:textSize="25sp"
 	        android:layout_margin="5dip"
-	        android:background="@drawable/button_config"
+	        android:background="@drawable/button_config"  
 	        android:text="@string/gallery" />
 	    
 	  	<Button
