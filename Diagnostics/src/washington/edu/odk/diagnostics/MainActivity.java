@@ -3,10 +3,8 @@ package washington.edu.odk.diagnostics;
 import java.io.File;
 import java.util.Calendar; 
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-
+import cgnet.swara.activity.MainActivity;
+import cgnet.swara.activity.RecordAudio;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,8 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore; 
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -91,54 +87,29 @@ public class MainActivity extends ActionBarActivity {
 			}  
 		}); 
     }
-    
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
-    }
-    
-    private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                    Log.i(TAG, "OpenCV loaded successfully");
-
-                    // Load native library after(!) OpenCV initialization
-                    System.loadLibrary("process_image");
-
-//                    mOpenCvCameraView.enableView();
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
-            }
-        }
-    };
 
     /** Called after an image has been chosen. */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data); 
 		if (resultCode == RESULT_OK) { 
-			if (requestCode == SELECT_PICTURE) { 
+			if (requestCode == SELECT_PICTURE || requestCode == TAKE_PICTURE) { 
 				Log.e(TAG, "Image selected");
+				 
 				Uri selectedImageUri = data.getData();
-				String selectedImagePath = getPath(selectedImageUri);
-
+				String selectedImagePath = getPath(selectedImageUri); 
 				bitmap = BitmapFactory.decodeFile(selectedImagePath);
-				if(bitmap != null) {
-					while(bitmap.getHeight() > 2000 || bitmap.getWidth() > 2000) {  
-						bitmap = halfSize(bitmap);
-					} 
-				} 
-			} else if(requestCode == TAKE_PICTURE) {
-				Log.e(TAG, "Image taken");
-			
-			}
+				
+				Intent intent = new Intent(MainActivity.this, ProcessImage.class);
+				intent.putExtra("resultCode", requestCode); 
+				intent.putExtra("bitmap", bitmap); 
+				startActivity(intent);
+				
+		//		if(bitmap != null) {
+			//		while(bitmap.getHeight() > 2000 || bitmap.getWidth() > 2000) {  
+				//		bitmap = halfSize(bitmap);
+					//} 
+	//			} 
+			}  
 		} 
 	}
 	
