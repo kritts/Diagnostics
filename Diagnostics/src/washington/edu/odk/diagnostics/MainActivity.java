@@ -3,6 +3,10 @@ package washington.edu.odk.diagnostics;
 import java.io.File;
 import java.util.Calendar; 
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -87,6 +91,34 @@ public class MainActivity extends ActionBarActivity {
 			}  
 		}); 
     }
+    
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
+    }
+    
+    private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i(TAG, "OpenCV loaded successfully");
+
+                    // Load native library after(!) OpenCV initialization
+                    System.loadLibrary("process_image");
+
+//                    mOpenCvCameraView.enableView();
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
 
     /** Called after an image has been chosen. */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
