@@ -1,10 +1,8 @@
 package washington.edu.odk.diagnostics;
 
 import java.io.File;
-import java.util.Calendar; 
+import java.util.Calendar;  
 
-import cgnet.swara.activity.MainActivity;
-import cgnet.swara.activity.RecordAudio;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore; 
 import android.util.Log;
 import android.view.View;
@@ -41,9 +40,8 @@ public class MainActivity extends ActionBarActivity {
 	
 	/** */
 	private static final int TAKE_PICTURE = 2;
-	 
-	/** Used to show the users chosen image.*/
-	private Bitmap bitmap = null;
+	
+	private String mImagePath = null;
 	    
 	
     @Override
@@ -74,14 +72,20 @@ public class MainActivity extends ActionBarActivity {
 				String time = c.get(Calendar.HOUR_OF_DAY) + "_" 
 						+ c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
 
-				String image = "/" + date + "__" + time;
+				mImagePath = "/" + date + "__" + time;
 				 
-				image += ".jpg"; 
+				mImagePath += ".jpg"; 
 				 
 				 
-			    Uri imageUri = Uri.fromFile(new File(image));
+			    Uri imageUri = Uri.fromFile(new File(mImagePath));
 				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 //intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+				
+				File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
+				imagesFolder.mkdirs(); 
+				File photo = new File(imagesFolder, mImagePath + ".jpg");
+				Uri uriSavedImage = Uri.fromFile(photo);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);  
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, TAKE_PICTURE);
 			}  
@@ -94,31 +98,22 @@ public class MainActivity extends ActionBarActivity {
 		if (resultCode == RESULT_OK) { 
 			if (requestCode == SELECT_PICTURE || requestCode == TAKE_PICTURE) { 
 				Log.e(TAG, "Image selected");
-				 
-				Uri selectedImageUri = data.getData();
-				String selectedImagePath = getPath(selectedImageUri); 
-				bitmap = BitmapFactory.decodeFile(selectedImagePath);
 				
+				String selectedImagePath;  
+				if(data != null) { 
+					Uri selectedImageUri = data.getData();
+					selectedImagePath = getPath(selectedImageUri); 
+				} else {
+					selectedImagePath = mImagePath; // shouldn't be null
+				}
 				Intent intent = new Intent(MainActivity.this, ProcessImage.class);
 				intent.putExtra("resultCode", requestCode); 
-				intent.putExtra("bitmap", bitmap); 
-				startActivity(intent);
-				
-		//		if(bitmap != null) {
-			//		while(bitmap.getHeight() > 2000 || bitmap.getWidth() > 2000) {  
-				//		bitmap = halfSize(bitmap);
-					//} 
-	//			} 
+				intent.putExtra("path", selectedImagePath); 
+				startActivity(intent); 
 			}  
 		} 
 	}
-	
-	/** Minimizes size of the bitmap so that it can be displayed in the app. */ 
-	private Bitmap halfSize(Bitmap input) { 
-		int height = input.getHeight();
-		int width = input.getWidth();  
-		return Bitmap.createScaledBitmap(input,  width/2, height/2, false);
-	}
+
 
 	/** Given a uri, returns the absolute path as a string. */
 	public String getPath(Uri uri) {
