@@ -1,5 +1,7 @@
 package washington.edu.odk.diagnostics;
 
+import java.io.File;
+
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader; 
@@ -28,7 +30,7 @@ public class ProcessImage extends ActionBarActivity {
 
 	private int resultCode;
 	
-	public native String findCirclesNative(String imagePath);
+	public native String findCirclesNative(String imagePath, String fileName);
 	 
 	
 	@Override
@@ -46,15 +48,18 @@ public class ProcessImage extends ActionBarActivity {
 		resultCode = extras.getInt("resultCode");
 		
 		if(resultCode == 2) {
-			path = Environment.getExternalStorageDirectory() + "/Diagnostics_Images" + path;
+			path = "/storage/emulated/0" + "/Diagnostics_Images" + path;
 			Log.e(TAG, path);
 		}
 		Log.e(TAG, path);
+		
 	}
 		
 	
 	private void setImage() {  
-		String output_path = findCirclesNative(path); 
+		File temp = new File(path);
+		String two = temp.getName();
+		String output_path = findCirclesNative(path, two); 
 		bitmap = BitmapFactory.decodeFile(path);  
 
 		bitmap = BitmapFactory.decodeFile(output_path);

@@ -83,6 +83,9 @@ public class MainActivity extends ActionBarActivity {
 				
 				File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
 				imagesFolder.mkdirs(); 
+			//TODO
+				File imagesFolder2 = new File(Environment.getExternalStorageDirectory(), "Output"); 
+				imagesFolder2.mkdirs(); 
 				File photo = new File(imagesFolder, mImagePath + ".jpg");
 				Uri uriSavedImage = Uri.fromFile(photo);
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);  

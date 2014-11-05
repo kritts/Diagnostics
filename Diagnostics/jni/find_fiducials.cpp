@@ -8,9 +8,9 @@ using namespace std;
 using namespace cv;
 
 extern "C" {
-	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath);
+	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName);
  
-	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath)
+	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName)
 	 {
 
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
@@ -42,69 +42,70 @@ extern "C" {
 
 
 		// Blur the image
-			//GaussianBlur(cropedImage, croppedBlurred, Size(1, 1), 10.0);
+	    //GaussianBlur(cropedImage, croppedBlurred, Size(1, 1), 10.0);
 
-			// Increase contrast
-			//equalizeHist(croppedBlurred, croppedBlurred);
+		// Increase contrast
+		//equalizeHist(croppedBlurred, croppedBlurred);
 
-			// Additional threshold
-			croppedBlurred = croppedBlurred > 100;
+		// Additional threshold
+		croppedBlurred = croppedBlurred > 100;
 
-			// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
-			threshold(cropedImage, croppedBlurred, // input and output
-					  50,							  // treshold value
-					  255,							  // max binary value
-					  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
+		// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
+		threshold(cropedImage, croppedBlurred, // input and output
+				  50,							  // treshold value
+				  255,							  // max binary value
+				  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
 
 
-			Mat output;
-			int erosion_size = 3;
-			Mat element = getStructuringElement(MORPH_CROSS, Size(2 * erosion_size + 1, 2 * erosion_size + 1), Point(erosion_size, erosion_size));
-			Mat dilated;
+		Mat output;
+		int erosion_size = 3;
+		Mat element = getStructuringElement(MORPH_CROSS, Size(2 * erosion_size + 1, 2 * erosion_size + 1), Point(erosion_size, erosion_size));
+		Mat dilated;
 
-			// Apply the erosion operation
-			erode(croppedBlurred, croppedBlurred, element);
-			dilate(croppedBlurred, croppedBlurred, element);
+		// Apply the erosion operation
+		erode(croppedBlurred, croppedBlurred, element);
+		dilate(croppedBlurred, croppedBlurred, element);
 
-			// Finding contours
-			// Thresholds
-			int thresh = 50;
-			int max_thresh = 255;
-			RNG rng(12345);
-			double area;
+		// Finding contours
+		// Thresholds
+		int thresh = 50;
+		int max_thresh = 255;
+		RNG rng(12345);
+		double area;
 
-			Mat canny_output;
-			vector<vector<Point> > contours;
-			vector<Vec4i> hierarchy;
-			vector<Point> approx;
+		Mat canny_output;
+    	vector<vector<Point> > contours;
+		vector<Vec4i> hierarchy;
+		vector<Point> approx;
 
-			// Detect edges using canny
-			Canny(croppedBlurred, canny_output, thresh, thresh * 2, 3);
+		// Detect edges using canny
+		Canny(croppedBlurred, canny_output, thresh, thresh * 2, 3);
 
-			// Find contours
-			findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+		// Find contours
+		findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-			// Draw contours
-			Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
+		// Draw contours
+		Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
 
-			for (int j = 0; j < contours.size(); j++) {
-				area = contourArea(contours[j]);
-				approxPolyDP(contours[j], approx, 5, true);
+		for (int j = 0; j < contours.size(); j++) {
+			area = contourArea(contours[j]);
+			approxPolyDP(contours[j], approx, 5, true);
 
-				if (area > 300) {
+			if (area > 300) {
 
-					Scalar color = Scalar(255, 255, 255);
+				Scalar color = Scalar(255, 255, 255);
 
-					drawContours(drawing, contours, j, Scalar(0, 255, 255), CV_FILLED);
-					vector<Point>::iterator vertex;
+				drawContours(drawing, contours, j, Scalar(0, 255, 255), CV_FILLED);
+				vector<Point>::iterator vertex;
 
-					for (vertex = approx.begin(); vertex != approx.end(); ++vertex)
-					{
-						circle(croppedBlurred, *vertex, 3, Scalar(0, 0, 255), 1);
+				for (vertex = approx.begin(); vertex != approx.end(); ++vertex) {
+					circle(croppedBlurred, *vertex, 3, Scalar(0, 0, 255), 1);
 					}
 				}
 
 			}
+
+		imwrite("/storage/emulated/0/Output/two.jpg", drawing);
 	//	saveFeatures(templImage);
 		return imagePath;
 	 }
