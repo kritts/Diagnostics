@@ -62,7 +62,7 @@ public class ProcessImage extends ActionBarActivity {
 		String output_path = findCirclesNative(path, two); 
 		bitmap = BitmapFactory.decodeFile(path);  
 
-		bitmap = BitmapFactory.decodeFile(output_path);
+		bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Output/six.jpg");
 		if(bitmap != null) {
 			while(bitmap.getHeight() > 2000 || bitmap.getWidth() > 2000) {  
 				Log.e(TAG, "Bitmap height: " + bitmap.getHeight() + " width: " + bitmap.getWidth());

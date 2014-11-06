@@ -15,12 +15,12 @@ extern "C" {
 
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 
-		Mat image, temp;
-		image = imread(nativeString, 0);
-
-		// Given image
+		Mat image = imread(nativeString, 0);
+		Mat temp = image;
 		Mat src = image;
 		Mat channel[3];
+
+		Mat output_final = image;
 
 		// Blue channel of image
 	    split(src, channel);
@@ -40,6 +40,8 @@ extern "C" {
 		Mat original_cropped = src(Rect(originalX, originalY, width, height));
 		Mat croppedBlurred;
 
+
+		output_final = output_final(Rect(originalX, originalY, width, height));
 
 		// Blur the image
 	    //GaussianBlur(cropedImage, croppedBlurred, Size(1, 1), 10.0);
@@ -92,21 +94,25 @@ extern "C" {
 			approxPolyDP(contours[j], approx, 5, true);
 
 			if (area > 300) {
-
 				Scalar color = Scalar(255, 255, 255);
 
 				drawContours(drawing, contours, j, Scalar(0, 255, 255), CV_FILLED);
 				vector<Point>::iterator vertex;
 
 				for (vertex = approx.begin(); vertex != approx.end(); ++vertex) {
-					circle(croppedBlurred, *vertex, 3, Scalar(0, 0, 255), 1);
+					circle(original_cropped, *vertex, 3, Scalar(0, 0, 255), 1);
 					}
 				}
 
 			}
 
-		imwrite("/storage/emulated/0/Output/two.jpg", drawing);
-	//	saveFeatures(templImage);
+		imwrite("/storage/emulated/0/Output/one.jpg", blue_channel);
+		imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
+		imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
+		imwrite("/storage/emulated/0/Output/four.jpg", drawing);
+		imwrite("/storage/emulated/0/Output/six.jpg", original_cropped);
+
+
 		return imagePath;
 	 }
 }
