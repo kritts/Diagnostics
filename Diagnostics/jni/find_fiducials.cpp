@@ -106,10 +106,13 @@ extern "C" {
 
 			}
 
-		imwrite("/storage/emulated/0/Output/one.jpg", blue_channel);
-		imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
-		imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
-		imwrite("/storage/emulated/0/Output/four.jpg", drawing);
+
+        // Save images
+		// TODO - Don't have these values hard coded in
+	//	imwrite("/storage/emulated/0/Output/one.jpg", blue_channel);
+	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
+	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
+	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 		imwrite("/storage/emulated/0/Output/six.jpg", original_cropped);
 
 
