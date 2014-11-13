@@ -52,9 +52,7 @@ extern "C" {
 
 		// Roughly cropping the image
 		Mat croppedImage = blue_channel(Rect(originalX, originalY, width, height));
-
-		Mat croppedBlurred = croppedImage;
-
+        Mat croppedBlurred;
 
 		original_image = original_image(Rect(originalX, originalY, width, height));
 
@@ -65,7 +63,7 @@ extern "C" {
 		//equalizeHist(croppedBlurred, croppedBlurred);
 
 		// Additional threshold
-		croppedBlurred = croppedBlurred > 100;
+		//croppedImage = croppedImage > 100;
 
 		// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
 		threshold(croppedImage, croppedBlurred, // input and output
@@ -73,11 +71,9 @@ extern "C" {
 				  255,							  // max binary value
 				  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
 
-
-		Mat output;
+		// Parameters
 		int erosion_size = 3;
 		Mat element = getStructuringElement(MORPH_CROSS, Size(2 * erosion_size + 1, 2 * erosion_size + 1), Point(erosion_size, erosion_size));
-		Mat dilated;
 
 		// Apply the erosion operation
 		erode(croppedBlurred, croppedBlurred, element);
