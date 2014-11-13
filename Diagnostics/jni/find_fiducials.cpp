@@ -21,7 +21,6 @@ using namespace cv;
 
 extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName);
-	vector<Point> getAverages(vector<vector<Point> > contours);
 
 	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName)
 	{
@@ -121,7 +120,7 @@ extern "C" {
 				}
 	    }
 
-        vector<Point> averages = getAverages(foundContours);
+        vector<Point> averages;
 
 		for (int j = 0; j < foundContours.size(); j++) {
 			vector<Point> temp = foundContours[j];
@@ -200,28 +199,6 @@ extern "C" {
 
 		return imagePath;
 	 }
-
-
-	 vector<Point> getAverages(vector<vector<Point> > contours) {
-	     vector<Point> averages;
-
-		 for (int j = 0; j < contours.size(); j++) {
-	    	vector<Point> temp = contours[j];
-	        float sumX = 0.0;
-	        float sumY = 0.0;
-
-			for(int k = 0; k < temp.size(); k++) {
-			    sumX += temp[k].x;
-		        sumY += temp[k].y;
-			}
-			Point current = Point(((float)sumX)/temp.size(), ((float)sumY)/temp.size());
-	        averages.push_back(current);
-
-	     }
-	 }
-
-
-
 }
 
 
