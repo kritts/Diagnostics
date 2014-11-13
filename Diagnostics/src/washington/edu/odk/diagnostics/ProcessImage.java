@@ -1,21 +1,18 @@
 package washington.edu.odk.diagnostics;
 
 import java.io.File;
-
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader; 
-
-import android.support.v7.app.ActionBarActivity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory; 
-import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log; 
+import android.os.Bundle; 
+import android.content.Intent;
+import android.graphics.Bitmap; 
 import android.widget.ImageView;
+import android.graphics.BitmapFactory;
+import org.opencv.android.OpenCVLoader;  
+import org.opencv.android.BaseLoaderCallback;
+import android.support.v7.app.ActionBarActivity;
+import org.opencv.android.LoaderCallbackInterface;
 
-// This is the 
+// This file runs NDK code to process the chosen image 
 public class ProcessImage extends ActionBarActivity {
 	private static final String TAG = "ProcessImage";
 

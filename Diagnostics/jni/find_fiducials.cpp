@@ -113,11 +113,10 @@ extern "C" {
 				drawContours(drawing, contours, j, Scalar(222, 20, 20), CV_FILLED);
 
 				vector<Point>::iterator vertex;
-
 				for (vertex = approx.begin(); vertex != approx.end(); ++vertex) {
 					circle(original_image, *vertex, 3, Scalar(222, 20, 20), 1);
 					}
-				}
+			}
 	    }
 
         vector<Point> averages;
