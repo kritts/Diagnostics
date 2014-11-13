@@ -21,7 +21,8 @@ using namespace cv;
 
 extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName);
- 
+	vector<Point> getAverages(vector<vector<Point> > contours);
+
 	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName)
 	{
 
@@ -71,6 +72,7 @@ extern "C" {
 				  255,							  // max binary value
 				  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
 
+
 		// Parameters
 		int erosion_size = 3;
 		Mat element = getStructuringElement(MORPH_CROSS, Size(2 * erosion_size + 1, 2 * erosion_size + 1), Point(erosion_size, erosion_size));
@@ -107,8 +109,6 @@ extern "C" {
 			approxPolyDP(contours[j], approx, 5, true);
 
 			if (area > 300) {
-
-				__android_log_print(ANDROID_LOG_INFO, "COUNT", "AREA - %f",  area);
 				Scalar color = Scalar(222, 20, 20);
                 foundContours.push_back(contours[j]);
 				drawContours(drawing, contours, j, Scalar(222, 20, 20), CV_FILLED);
@@ -121,7 +121,7 @@ extern "C" {
 				}
 	    }
 
-        vector<Point> averages;
+        vector<Point> averages = getAverages(foundContours);
 
 		for (int j = 0; j < foundContours.size(); j++) {
 			vector<Point> temp = foundContours[j];
@@ -200,6 +200,28 @@ extern "C" {
 
 		return imagePath;
 	 }
+
+
+	 vector<Point> getAverages(vector<vector<Point> > contours) {
+	     vector<Point> averages;
+
+		 for (int j = 0; j < contours.size(); j++) {
+	    	vector<Point> temp = contours[j];
+	        float sumX = 0.0;
+	        float sumY = 0.0;
+
+			for(int k = 0; k < temp.size(); k++) {
+			    sumX += temp[k].x;
+		        sumY += temp[k].y;
+			}
+			Point current = Point(((float)sumX)/temp.size(), ((float)sumY)/temp.size());
+	        averages.push_back(current);
+
+	     }
+	 }
+
+
+
 }
 
 
