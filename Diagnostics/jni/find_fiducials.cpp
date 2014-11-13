@@ -4,6 +4,13 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <stdio.h>
 #include <string>
+#include <vector>
+#include <android/log.h>
+
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
 using namespace std;
 using namespace cv;
 
@@ -37,7 +44,12 @@ extern "C" {
 
 		// Roughly cropping the image
 		Mat cropedImage = blue_channel(Rect(originalX, originalY, width, height));
-		Mat original_cropped = src(Rect(originalX, originalY, width, height));
+		Mat original_cropped;
+
+		src.copyTo(original_cropped);
+
+
+		original_cropped = src(Rect(originalX, originalY, width, height));
 		Mat croppedBlurred;
 
 
@@ -89,22 +101,92 @@ extern "C" {
 		// Draw contours
 		Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
 
+		vector<vector<Point> > foundContours;
+
 		for (int j = 0; j < contours.size(); j++) {
 			area = contourArea(contours[j]);
 			approxPolyDP(contours[j], approx, 5, true);
 
 			if (area > 300) {
-				Scalar color = Scalar(255, 255, 255);
 
-				drawContours(drawing, contours, j, Scalar(0, 255, 255), CV_FILLED);
+				__android_log_print(ANDROID_LOG_INFO, "COUNT", "AREA - %f",  area);
+				Scalar color = Scalar(222, 20, 20);
+                foundContours.push_back(contours[j]);
+				drawContours(drawing, contours, j, Scalar(222, 20, 20), CV_FILLED);
+
 				vector<Point>::iterator vertex;
 
 				for (vertex = approx.begin(); vertex != approx.end(); ++vertex) {
-					circle(original_cropped, *vertex, 3, Scalar(0, 0, 255), 1);
+					circle(original_cropped, *vertex, 3, Scalar(222, 20, 20), 1);
 					}
 				}
+	    }
 
+        vector<Point> averages;
+
+		for (int j = 0; j < foundContours.size(); j++) {
+			vector<Point> temp = foundContours[j];
+            float sumX = 0.0;
+            float sumY = 0.0;
+
+			for(int k = 0; k < temp.size(); k++) {
+				sumX += temp[k].x;
+				sumY += temp[k].y;
 			}
+			Point current = Point(((float)sumX)/temp.size(), ((float)sumY)/temp.size());
+            averages.push_back(current);
+
+		}
+
+		vector<vector<Point> > betterFits;
+		// At this point, averages is a vector of Points
+        for(int m = 0; m < averages.size() - 1; m++) {
+        	for(int n = 0; n < averages.size(); n++) {
+        		if (m != n) {
+        		   Point one = averages.at(m);
+        		   Point two = averages.at(n);
+
+         		   double length = abs((double) (one.x - two.x));
+                   double width = abs((double) (one.y - two.y));
+                   std::vector<Point> v(2);
+            //       v = { one, two };
+            //       std::vector<Point> temp {};
+        		}
+        	}
+        }
+
+		int minSum = 10000;
+		int maxSum = 0;
+		int indexMin = 0;
+		int indexMax = 0;
+
+        for(int p = 0; p < averages.size(); p++) {
+           Point current = averages.at(p);
+           int sum = current.x + current.y;
+           if(sum <= minSum) {
+        	   minSum = sum;
+        	   indexMin = p;
+
+				__android_log_print(ANDROID_LOG_INFO, "min index", "current x and y - %d and %d",  current.x, current.y);
+           }
+           if(sum >= maxSum) {
+        	   maxSum = sum;
+        	   indexMax = p;
+        	   __android_log_print(ANDROID_LOG_INFO, "max index", "current x and y - %d and %d",  current.x, current.y);
+           }
+        }
+
+        Point minPoint = averages.at(indexMin);
+        Point maxPoint = averages.at(indexMax);
+
+        __android_log_print(ANDROID_LOG_INFO, "min_x min_y", "%d and %d",  minPoint.x, minPoint.y);
+        __android_log_print(ANDROID_LOG_INFO, "max_x max_y", "%d and %d",  maxPoint.x, maxPoint.y);
+        __android_log_print(ANDROID_LOG_INFO, "difference x and y", "%d and %d",  maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
+
+		original_cropped = original_cropped(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
+
+
+
 
 
         // Save images
