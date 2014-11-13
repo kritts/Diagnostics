@@ -179,15 +179,13 @@ extern "C" {
         Point minPoint = averages.at(indexMin);
         Point maxPoint = averages.at(indexMax);
 
-        __android_log_print(ANDROID_LOG_INFO, "min_x min_y", "%d and %d",  minPoint.x, minPoint.y);
-        __android_log_print(ANDROID_LOG_INFO, "max_x max_y", "%d and %d",  maxPoint.x, maxPoint.y);
-        __android_log_print(ANDROID_LOG_INFO, "difference x and y", "%d and %d",  maxPoint.x - minPoint.x, maxPoint.y - minPoint.y);
-
 		original_cropped = original_cropped(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
 
 		rectangle( original_cropped, Point( 300, 150 ), Point( 500, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
 		rectangle( original_cropped, Point( 550, 150 ), Point( 750, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
 
+		rectangle( original_cropped, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
+		rectangle( original_cropped, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 
 
