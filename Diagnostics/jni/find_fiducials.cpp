@@ -28,24 +28,22 @@ extern "C" {
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 
-		Mat image = imread(nativeString, 1);   // Original read in image, since flag (1) is > 0 return a 3-channel color image.
+		 // Original read in image, since flag (1) is > 0 return a 3-channel color image.
+		Mat original_image = imread(nativeString, 1);
+
+		// Grayscale image
+		Mat image = imread(nativeString, 0);
 		Mat src = image;
 
-		Mat original_image(image);   // Ideally, a copy of the image not a reference to it
-
-		Mat channel[3];
-
-		// Blue channel of image
+		Mat channel[3]; 		// Blue channel of image
 	    split(image, channel);
 		Mat blue_channel = channel[0];
 
-		// At this point, original_image shouldn't be changed.
-
-
-
+		// Height and width of the original picture
 		int rows = blue_channel.rows;
 		int cols = blue_channel.cols;
 
+		// Cropping the image slightly
 		int originalX = cols / 8;
 		int originalY = rows * 3 / 8;
 		int width = cols * 7 / 8 - originalX;
@@ -53,20 +51,15 @@ extern "C" {
 
 
 		// Roughly cropping the image
-		Mat cropedImage = blue_channel(Rect(originalX, originalY, width, height));
-		Mat original_cropped;
+		Mat croppedImage = blue_channel(Rect(originalX, originalY, width, height));
 
-		src.copyTo(original_cropped);
-
-
-		original_cropped = src(Rect(originalX, originalY, width, height));
-		Mat croppedBlurred;
+		Mat croppedBlurred = croppedImage;
 
 
 		original_image = original_image(Rect(originalX, originalY, width, height));
 
 		// Blur the image
-	    //GaussianBlur(cropedImage, croppedBlurred, Size(1, 1), 10.0);
+	    //GaussianBlur(croppedImage, croppedBlurred, Size(1, 1), 10.0);
 
 		// Increase contrast
 		//equalizeHist(croppedBlurred, croppedBlurred);
@@ -75,7 +68,7 @@ extern "C" {
 		croppedBlurred = croppedBlurred > 100;
 
 		// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
-		threshold(cropedImage, croppedBlurred, // input and output
+		threshold(croppedImage, croppedBlurred, // input and output
 				  50,							  // treshold value
 				  255,							  // max binary value
 				  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
