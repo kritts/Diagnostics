@@ -185,13 +185,9 @@ extern "C" {
 
 		original_cropped = original_cropped(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
 
-		rectangle( original_cropped, Point( 500,150 ), Point( 450, 100 ), Scalar( 0, 55, 255 ), +1, 4 );
+		rectangle( original_cropped, Point( 300, 150 ), Point( 500, 200 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_cropped, Point( 530, 150 ), Point( 750, 200 ), Scalar( 0, 55, 255 ), 3, 4 );
 
-		cvRectangle(original_cropped,
-		            cvPoint(500,150),                     // South-West point
-		            cvPoint(450, 100), // North-East point
-		            cvScalar(0, 255, 0, 0),
-		            1, 8, 0);
 
 
 
