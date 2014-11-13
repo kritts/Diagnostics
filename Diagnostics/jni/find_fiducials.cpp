@@ -1,3 +1,8 @@
+// Krittika D'Silva
+// krittika.dsilva@gmail.com
+
+// This code processes images of test strips for MRSA Diagnosis.
+
 #include <jni.h>
 #include "opencv2/core/core.hpp"
 #include <opencv2/highgui/highgui.hpp>
@@ -18,20 +23,25 @@ extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName);
  
 	JNIEXPORT jstring JNICALL Java_washington_edu_odk_diagnostics_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName)
-	 {
+	{
 
+		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 
-		Mat image = imread(nativeString, 0);
-		Mat temp = image;
+		Mat image = imread(nativeString, 1);   // Original read in image, since flag (1) is > 0 return a 3-channel color image.
 		Mat src = image;
+
+		Mat original_image(image);   // Ideally, a copy of the image not a reference to it
+
 		Mat channel[3];
 
-		Mat output_final = image;
-
 		// Blue channel of image
-	    split(src, channel);
+	    split(image, channel);
 		Mat blue_channel = channel[0];
+
+		// At this point, original_image shouldn't be changed.
+
+
 
 		int rows = blue_channel.rows;
 		int cols = blue_channel.cols;
@@ -53,7 +63,7 @@ extern "C" {
 		Mat croppedBlurred;
 
 
-		output_final = output_final(Rect(originalX, originalY, width, height));
+		original_image = original_image(Rect(originalX, originalY, width, height));
 
 		// Blur the image
 	    //GaussianBlur(cropedImage, croppedBlurred, Size(1, 1), 10.0);
@@ -117,7 +127,7 @@ extern "C" {
 				vector<Point>::iterator vertex;
 
 				for (vertex = approx.begin(); vertex != approx.end(); ++vertex) {
-					circle(original_cropped, *vertex, 3, Scalar(222, 20, 20), 1);
+					circle(original_image, *vertex, 3, Scalar(222, 20, 20), 1);
 					}
 				}
 	    }
@@ -179,13 +189,13 @@ extern "C" {
         Point minPoint = averages.at(indexMin);
         Point maxPoint = averages.at(indexMax);
 
-		original_cropped = original_cropped(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
+        original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
 
-		rectangle( original_cropped, Point( 300, 150 ), Point( 500, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_cropped, Point( 550, 150 ), Point( 750, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 300, 150 ), Point( 500, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 550, 150 ), Point( 750, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
 
-		rectangle( original_cropped, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
-		rectangle( original_cropped, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
+		rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
+		rectangle( original_image, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 
 
@@ -196,8 +206,8 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
-		imwrite("/storage/emulated/0/Output/six.jpg", original_cropped);
 
+		imwrite("/storage/emulated/0/Output/six.jpg", original_image);
 
 		return imagePath;
 	 }
