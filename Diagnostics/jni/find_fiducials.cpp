@@ -135,8 +135,10 @@ extern "C" {
 
 		}
 
+		// At the moment, this doesn't do anything
+		// It's purpose is to find spots that are the best fit - by looking at the
+		// area created by the four points.
 		vector<vector<Point> > betterFits;
-		// At this point, averages is a vector of Points
         for(int m = 0; m < averages.size() - 1; m++) {
         	for(int n = 0; n < averages.size(); n++) {
         		if (m != n) {
@@ -173,22 +175,20 @@ extern "C" {
            }
         }
 
+        // Point at the upper left
         Point minPoint = averages.at(indexMin);
+        // Point at the lower right
         Point maxPoint = averages.at(indexMax);
 
         original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
 
 		rectangle( original_image, Point( 300, 150 ), Point( 500, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
 		rectangle( original_image, Point( 550, 150 ), Point( 750, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
-
 		rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 		rectangle( original_image, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 
-
-
         // Save images
-		// TODO - Don't have these values hard coded in
 	//	imwrite("/storage/emulated/0/Output/one.jpg", blue_channel);
 	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
