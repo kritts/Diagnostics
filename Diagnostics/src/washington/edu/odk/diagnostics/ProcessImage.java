@@ -1,15 +1,20 @@
 package washington.edu.odk.diagnostics;
 
 import java.io.File;
+
 import android.util.Log; 
 import android.os.Bundle; 
 import android.content.Intent;
 import android.graphics.Bitmap; 
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.graphics.BitmapFactory;
+
 import org.opencv.android.OpenCVLoader;  
 import org.opencv.android.BaseLoaderCallback;
+
 import android.support.v7.app.ActionBarActivity;
+
 import org.opencv.android.LoaderCallbackInterface;
 
 // This file runs NDK code to process the chosen image 
@@ -57,6 +62,29 @@ public class ProcessImage extends ActionBarActivity {
 		File temp = new File(path);
 		String two = temp.getName();
 		String output_path = findCirclesNative(path, two); 
+		path = "/storage/emulated/0/Output/six.jpg";
+		
+		
+		String html =   "<html>"
+				        + "<body bgcolor=\"White\">" 
+                        +    "<center> "
+                        +       "<img src=\"file:///" + path + "\" width=\"100%\"" + "> "
+                        +     "</center>"
+                        + "</body>" 
+                     + "</html>";
+		Log.e(TAG, html);
+		 
+
+		WebView myWebView = (WebView)this.findViewById(R.id.webview);
+
+		myWebView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null); 
+		myWebView.getSettings().setBuiltInZoomControls(true);
+		myWebView.getSettings().setUseWideViewPort(true);
+		myWebView.getSettings().setLoadWithOverviewMode(true);
+		
+		
+		//path
+		/*
 		bitmap = BitmapFactory.decodeFile(path);  
 
 		bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Output/six.jpg");
@@ -67,6 +95,8 @@ public class ProcessImage extends ActionBarActivity {
 			}  
 			im.setImageBitmap(bitmap);   
 		} 
+		
+		*/
 	}
 		 
     
