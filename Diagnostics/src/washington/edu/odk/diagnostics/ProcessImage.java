@@ -1,32 +1,23 @@
 package washington.edu.odk.diagnostics;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
+ 
 import java.io.File;
-import java.io.FileInputStream;
+import android.util.Log;
+import java.util.Arrays; 
+import android.os.Bundle;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import android.util.Log; 
-import android.os.Bundle; 
-import android.content.Intent;
-import android.graphics.Bitmap; 
-import android.webkit.WebView;
-import android.widget.ImageView;
-import android.graphics.BitmapFactory;
-
-import org.opencv.android.OpenCVLoader;  
-import org.opencv.android.BaseLoaderCallback;
-
-import android.support.v7.app.ActionBarActivity;
-
-import org.opencv.android.LoaderCallbackInterface;
-
 import com.androidplot.xy.*;
-
-import java.util.Arrays;
-
-
+import android.content.Intent; 
+import android.webkit.WebView; 
+import java.io.BufferedReader; 
+import java.io.FileInputStream;
+import android.graphics.Bitmap;
+import android.widget.ImageView; 
+import java.io.InputStreamReader; 
+import org.opencv.android.OpenCVLoader;  
+import org.opencv.android.BaseLoaderCallback; 
+import android.support.v7.app.ActionBarActivity; 
+import org.opencv.android.LoaderCallbackInterface; 
 
 
 // This file runs NDK code to process the chosen image 
@@ -35,15 +26,18 @@ public class ProcessImage extends ActionBarActivity {
 
 	/** Used to show the users chosen image.*/
 	private Bitmap bitmap = null;
-	
-	private ImageView im;
-	
+	 
+	/** True if OpenCV has been initialized, false otherwise. */
 	private boolean mOpenCVInitiated = false;
 	
+	/** Path of the chosen image. */
 	private String path;
 
+	/** If resultCode == 1, image was just taken. 
+	 *  If resultCode == 2, a local image from the device was chosen. */
 	private int resultCode;
 	
+	/** C++ code to process image*/
 	public native String findCirclesNative(String imagePath, String fileName);
 	 
 	
@@ -51,8 +45,7 @@ public class ProcessImage extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_process_image);
-		
-		im = (ImageView) findViewById(R.id.image);
+		 
 		
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
          
@@ -73,7 +66,7 @@ public class ProcessImage extends ActionBarActivity {
 	private void setImage() {  
 		File temp = new File(path);
 		String two = temp.getName();
-		String output_path = findCirclesNative(path, two); 
+		String output_path = findCirclesNative(path, two);  // TODO
 		path = "/storage/emulated/0/Output/six.jpg";
 		
 		
@@ -101,8 +94,9 @@ public class ProcessImage extends ActionBarActivity {
 			value = "";
 			e.printStackTrace();
 		} 
-		String[] values = value.split("\n");
 		
+		
+		String[] values = value.split("\n"); 
 		Number[] doubles = new Number[values.length];
 		
 		for (int i = 0; i < values.length; i++) {
@@ -123,9 +117,7 @@ public class ProcessImage extends ActionBarActivity {
 				SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
 				"Series1");                             // Set the display title of the series
 	
-		LineAndPointFormatter series1Format = new LineAndPointFormatter();
-     //   series1Format.setPointLabelFormatter(new PointLabelFormatter());
-		 // add a new series' to the xyplot:
+		LineAndPointFormatter series1Format = new LineAndPointFormatter(); 
         mySimpleXYPlot.addSeries(series1, series1Format);
 	
 	
