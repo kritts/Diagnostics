@@ -2,21 +2,36 @@ package washington.edu.odk.diagnostics;
 
  
 import java.io.File;
+
 import android.util.Log;
+
 import java.util.Arrays; 
+
 import android.os.Bundle;
+
 import java.io.InputStream;
+
 import com.androidplot.xy.*;
+
 import android.content.Intent; 
 import android.webkit.WebView; 
+
 import java.io.BufferedReader; 
 import java.io.FileInputStream;
+
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
 import android.widget.ImageView; 
+
 import java.io.InputStreamReader; 
+
 import org.opencv.android.OpenCVLoader;  
 import org.opencv.android.BaseLoaderCallback; 
+
 import android.support.v7.app.ActionBarActivity; 
+
 import org.opencv.android.LoaderCallbackInterface; 
 
 
@@ -40,18 +55,18 @@ public class ProcessImage extends ActionBarActivity {
 	/** C++ code to process image*/
 	public native String findCirclesNative(String imagePath, String fileName);
 	 
-	
+	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_process_image);
 		 
-		
+		// Initialize OpenCV
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
          
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();  
-		path  = extras.getString("path");  //TODO: Make sure absolute path;  
+		path  = extras.getString("path");  			//TODO: Make sure absolute path;  
 		resultCode = extras.getInt("resultCode");
 		
 		if(resultCode == 2) {
@@ -67,7 +82,7 @@ public class ProcessImage extends ActionBarActivity {
 		File temp = new File(path);
 		String two = temp.getName();
 		String output_path = findCirclesNative(path, two);  // TODO
-		path = "/storage/emulated/0/Output/six.jpg";
+		path = "/storage/emulated/0/Output/six.jpg";		// TODO
 		
 		
 		String html =   "<html>"
@@ -77,9 +92,7 @@ public class ProcessImage extends ActionBarActivity {
                         +     "</center>"
                         + "</body>" 
                      + "</html>";
-		Log.e(TAG, html);
 		 
-
 		WebView myWebView = (WebView)this.findViewById(R.id.webview);
 
 		myWebView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null); 
@@ -89,36 +102,41 @@ public class ProcessImage extends ActionBarActivity {
 		
 		String value;
 		try {
-			value = getStringFromFile("/storage/emulated/0/Output/output.txt");
+			value = getStringFromFile("/storage/emulated/0/Output/output.txt"); // TODO
 		} catch (Exception e) { 
 			value = "";
 			e.printStackTrace();
 		} 
-		
-		
+		 
 		String[] values = value.split("\n"); 
 		Number[] doubles = new Number[values.length];
 		
 		for (int i = 0; i < values.length; i++) {
 		    doubles[i] = Double.parseDouble(values[i]);
 		}
-		
-		
+		 
 		Number[] series1Numbers = doubles;
-		
-		
-		Log.e(TAG, "!!!!!!!!!!!!!!!!!");
-		Log.e(TAG, "" + value.length());
+		  
 		 
 		XYPlot mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
-		
+		mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
+
 		XYSeries series1 = new SimpleXYSeries(
 				Arrays.asList(series1Numbers),          // SimpleXYSeries takes a List so turn our array into a List
 				SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
 				"Series1");                             // Set the display title of the series
-	
-		LineAndPointFormatter series1Format = new LineAndPointFormatter(); 
-        mySimpleXYPlot.addSeries(series1, series1Format);
+	  
+		// Format graph
+		LineAndPointFormatter series1Format = new LineAndPointFormatter(
+	            Color.rgb(0, 0, 0),                   // line color
+	            Color.rgb(0, 0, 0),                 // point color
+	            Color.rgb(34, 139, 34), null);          // fill color 
+		
+        mySimpleXYPlot.addSeries(series1, series1Format); 
+        
+        mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE); 
+        mySimpleXYPlot.getGraphWidget().getDomainOriginLinePaint().setColor(Color.BLACK);
+        mySimpleXYPlot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.BLACK);
 	
 	
 	}
@@ -137,8 +155,7 @@ public class ProcessImage extends ActionBarActivity {
 	public static String getStringFromFile (String filePath) throws Exception {
 	    File fl = new File(filePath);
 	    FileInputStream fin = new FileInputStream(fl);
-	    String ret = convertStreamToString(fin);
-	    //Make sure you close all streams.
+	    String ret = convertStreamToString(fin); 
 	    fin.close();        
 	    return ret;
 	}
