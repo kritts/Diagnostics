@@ -265,7 +265,7 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
-		imwrite("/storage/emulated/0/Output/six.jpg", copyOne);
+		imwrite("/storage/emulated/0/Output/six.jpg", original_image);
 
 		return imagePath;
 	 }

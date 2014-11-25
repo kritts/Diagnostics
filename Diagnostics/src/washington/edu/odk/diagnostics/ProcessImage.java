@@ -1,6 +1,8 @@
 package washington.edu.odk.diagnostics;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 
 import android.util.Log; 
 import android.os.Bundle; 
@@ -83,6 +85,29 @@ public class ProcessImage extends ActionBarActivity {
 		myWebView.getSettings().setLoadWithOverviewMode(true);
 		
 		
+		FileInputStream fis;
+		final StringBuffer storedString = new StringBuffer();
+
+		try {
+		    fis = openFileInput("/storage/emulated/0/Output/output.txt");
+		    DataInputStream dataIO = new DataInputStream(fis);
+		    String strLine = null;
+
+		    if ((strLine = dataIO.readLine()) != null) {
+		        storedString.append(strLine);
+		    }
+
+		    dataIO.close();
+		    fis.close();
+		}
+		catch  (Exception e) {  
+		}
+
+		String tempStr = storedString.toString();
+		String[] values = tempStr.split("\n");
+
+		Log.e(TAG, tempStr);
+		
 		//path
 		/*
 		bitmap = BitmapFactory.decodeFile(path);  
@@ -121,7 +146,7 @@ public class ProcessImage extends ActionBarActivity {
             }
         }
     }; 
-    
+    	
 	
 	/** Minimizes size of the bitmap so that it can be displayed in the app. */ 
 	private Bitmap halfSize(Bitmap input) { 
