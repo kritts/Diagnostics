@@ -251,7 +251,8 @@ extern "C" {
     	//	__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "avg %d", current);
         	current = (current - valDark) / (valWhite - valDark);
     		__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "VALUE OF INT %f", current);
-    		outputFile << current + "\n";
+    		outputFile << current;
+    		outputFile << "\n";
         }
 
         __android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "WHITE BLACK %f %f", valDark, valWhite);
