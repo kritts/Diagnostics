@@ -182,10 +182,60 @@ extern "C" {
 
         original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
 
-		rectangle( original_image, Point( 300, 150 ), Point( 500, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_image, Point( 550, 150 ), Point( 750, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
-		rectangle( original_image, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
+
+        Mat stdDark;
+        original_image.copyTo(stdDark);
+
+        Mat stdWhite;
+        original_image.copyTo(stdWhite);
+
+
+        Mat copyOne;
+        original_image.copyTo(copyOne);
+
+        Mat copyTwo;
+        original_image.copyTo(copyTwo);
+
+        // horizontal
+		rectangle( original_image, Point( 400, 150 ), Point( 450, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 650, 150 ), Point( 700, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
+
+		// vertical
+		//rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
+		//rectangle( original_image, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
+
+		// color standard, dark
+		rectangle( original_image, Point( 190, 50 ), Point( 200, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
+		// color standard, white
+		rectangle( original_image, Point( 120, 50 ), Point( 130, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
+
+
+		// dark color standard
+		Rect darkStd(Point(190, 50), Point(200, 60));
+		stdDark = stdDark(darkStd);
+
+		// white color standard
+		Rect whiteStd(Point( 120, 50 ), Point( 130, 60 ));
+		stdWhite = stdWhite(whiteStd);
+
+		// first test strip
+		Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
+		copyOne = copyOne(colorFirst);
+
+		// second test strip
+        Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
+        copyTwo = copyTwo(colorSecond);
+
+
+        Scalar avgDark = cv::mean(stdDark);
+        Scalar avgWhite = cv::mean(stdWhite);
+
+
+
+	//	cv::Mat mask(cv::Mat::zeros(rectangle( original_image, Point( 190, 50 ), Point( 200, 60 ), Scalar( 0, 55, 255 ), 1, 4 ))); //the mask with the size of cropped image
+
+
+//		__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "current x and y");
 
 
         // Save images
