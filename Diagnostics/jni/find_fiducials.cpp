@@ -12,6 +12,7 @@
 #include <vector>
 #include <android/log.h>
 
+#include <fstream>
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -189,7 +190,6 @@ extern "C" {
         Mat stdWhite;
         original_image.copyTo(stdWhite);
 
-
         Mat copyOne;
         original_image.copyTo(copyOne);
 
@@ -230,13 +230,33 @@ extern "C" {
         Scalar avgDark = cv::mean(stdDark);
         Scalar avgWhite = cv::mean(stdWhite);
 
+        // we can to look @ red color channel - not sure if this is acheiving what we want
+        double valDark = avgDark.val[0];
+        double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right
+
+        ofstream outputFile;
+        outputFile.open ("/storage/emulated/0/Output/output.txt");
 
 
-	//	cv::Mat mask(cv::Mat::zeros(rectangle( original_image, Point( 190, 50 ), Point( 200, 60 ), Scalar( 0, 55, 255 ), 1, 4 ))); //the mask with the size of cropped image
 
+        // copyOne & copyTwo
+        for(int r = 0; r < copyOne.rows; r++) {
+        	double current = 0.0;
+        	for(int s = 0; s < copyOne.cols; s++) {
+        		Vec3b tempColor = copyOne.at<Vec3b>(Point(s,r));
+        		//__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "avg %d", tempColor[0]);
+        		current += tempColor[0];
+        	}
+        	current = current / (double) copyOne.cols;
+    	//	__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "avg %d", current);
+        	current = (current - valDark) / (valWhite - valDark);
+    		__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "VALUE OF INT %f", current);
+    		outputFile << current + "\n";
+        }
 
-//		__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "current x and y");
+        __android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "WHITE BLACK %f %f", valDark, valWhite);
 
+        outputFile.close();
 
         // Save images
 	//	imwrite("/storage/emulated/0/Output/one.jpg", blue_channel);
@@ -244,7 +264,7 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
-		imwrite("/storage/emulated/0/Output/six.jpg", original_image);
+		imwrite("/storage/emulated/0/Output/six.jpg", copyOne);
 
 		return imagePath;
 	 }
