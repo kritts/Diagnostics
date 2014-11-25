@@ -249,7 +249,7 @@ int id action_context_bar 0x7f050020
 int id action_menu_divider 0x7f050019
 int id action_menu_presenter 0x7f05001a
 int id action_mode_close_button 0x7f050027
-int id action_settings 0x7f050042
+int id action_settings 0x7f050044
 int id activity_chooser_view_content 0x7f050028
 int id always 0x7f05000e
 int id any 0x7f050000
@@ -273,9 +273,11 @@ int id homeAsUp 0x7f050008
 int id icon 0x7f05002d
 int id ifRoom 0x7f05000d
 int id image 0x7f05002a
+int id layout 0x7f050041
 int id listMode 0x7f050004
 int id list_item 0x7f05002c
 int id middle 0x7f050015
+int id mySimpleXYPlot 0x7f050043
 int id never 0x7f05000c
 int id none 0x7f050013
 int id normal 0x7f050003
@@ -303,7 +305,7 @@ int id title 0x7f05002e
 int id top_action_bar 0x7f050023
 int id up 0x7f050024
 int id useLogo 0x7f050006
-int id webview 0x7f050041
+int id webview 0x7f050042
 int id withText 0x7f05000f
 int integer abc_max_action_buttons 0x7f090000
 int layout abc_action_bar_decor 0x7f030000

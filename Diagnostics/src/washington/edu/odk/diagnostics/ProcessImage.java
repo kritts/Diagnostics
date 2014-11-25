@@ -1,8 +1,11 @@
 package washington.edu.odk.diagnostics;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import android.util.Log; 
 import android.os.Bundle; 
@@ -18,6 +21,13 @@ import org.opencv.android.BaseLoaderCallback;
 import android.support.v7.app.ActionBarActivity;
 
 import org.opencv.android.LoaderCallbackInterface;
+
+import com.androidplot.xy.*;
+
+import java.util.Arrays;
+
+
+
 
 // This file runs NDK code to process the chosen image 
 public class ProcessImage extends ActionBarActivity {
@@ -84,47 +94,65 @@ public class ProcessImage extends ActionBarActivity {
 		myWebView.getSettings().setUseWideViewPort(true);
 		myWebView.getSettings().setLoadWithOverviewMode(true);
 		
-		
-		FileInputStream fis;
-		final StringBuffer storedString = new StringBuffer();
-
+		String value;
 		try {
-		    fis = openFileInput("/storage/emulated/0/Output/output.txt");
-		    DataInputStream dataIO = new DataInputStream(fis);
-		    String strLine = null;
-
-		    if ((strLine = dataIO.readLine()) != null) {
-		        storedString.append(strLine);
-		    }
-
-		    dataIO.close();
-		    fis.close();
-		}
-		catch  (Exception e) {  
-		}
-
-		String tempStr = storedString.toString();
-		String[] values = tempStr.split("\n");
-
-		Log.e(TAG, tempStr);
-		
-		//path
-		/*
-		bitmap = BitmapFactory.decodeFile(path);  
-
-		bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Output/six.jpg");
-		if(bitmap != null) {
-			while(bitmap.getHeight() > 2000 || bitmap.getWidth() > 2000) {  
-				Log.e(TAG, "Bitmap height: " + bitmap.getHeight() + " width: " + bitmap.getWidth());
-				bitmap = halfSize(bitmap);
-			}  
-			im.setImageBitmap(bitmap);   
+			value = getStringFromFile("/storage/emulated/0/Output/output.txt");
+		} catch (Exception e) { 
+			value = "";
+			e.printStackTrace();
 		} 
+		String[] values = value.split("\n");
 		
-		*/
+		Number[] doubles = new Number[values.length];
+		
+		for (int i = 0; i < values.length; i++) {
+		    doubles[i] = Double.parseDouble(values[i]);
+		}
+		
+		
+		Number[] series1Numbers = doubles;
+		
+		
+		Log.e(TAG, "!!!!!!!!!!!!!!!!!");
+		Log.e(TAG, "" + value.length());
+		 
+		XYPlot mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
+		
+		XYSeries series1 = new SimpleXYSeries(
+				Arrays.asList(series1Numbers),          // SimpleXYSeries takes a List so turn our array into a List
+				SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
+				"Series1");                             // Set the display title of the series
+	
+		LineAndPointFormatter series1Format = new LineAndPointFormatter();
+     //   series1Format.setPointLabelFormatter(new PointLabelFormatter());
+		 // add a new series' to the xyplot:
+        mySimpleXYPlot.addSeries(series1, series1Format);
+	
+	
 	}
 		 
-    
+	public static String convertStreamToString(InputStream is) throws Exception {
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+	    StringBuilder sb = new StringBuilder();
+	    String line = null;
+	    while ((line = reader.readLine()) != null) {
+	      sb.append(line).append("\n");
+	    }
+	    reader.close();
+	    return sb.toString();
+	}
+
+	public static String getStringFromFile (String filePath) throws Exception {
+	    File fl = new File(filePath);
+	    FileInputStream fin = new FileInputStream(fl);
+	    String ret = convertStreamToString(fin);
+	    //Make sure you close all streams.
+	    fin.close();        
+	    return ret;
+	}
+	
+	
+	
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
