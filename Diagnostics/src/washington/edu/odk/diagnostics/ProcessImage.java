@@ -78,7 +78,7 @@ public class ProcessImage extends ActionBarActivity {
 	}
 		
 	
-	private void setImage() {  
+	private void showImageAndPlot() {  
 		File temp = new File(path);
 		String two = temp.getName();
 		String output_path = findCirclesNative(path, two);  // TODO
@@ -173,7 +173,7 @@ public class ProcessImage extends ActionBarActivity {
                     System.loadLibrary("process_image");
                     Log.i(TAG, "OpenCV loaded successfully");
 
-                    setImage();
+                    showImageAndPlot();
                     
                 } break;
                 default:
