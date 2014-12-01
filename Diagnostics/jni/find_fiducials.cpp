@@ -235,7 +235,7 @@ extern "C" {
         double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right
 
         ofstream outputFile;
-        outputFile.open ("/storage/emulated/0/Diagnostics_Images/ProcessedData/output.txt");
+        outputFile.open ("/storage/emulated/0/Diagnostics_Images/ProcessedData/output.txt"); // TODO
 
 
 
@@ -265,7 +265,7 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
-		imwrite("/storage/emulated/0/Diagnostics_Images/ProcessedImages/six.jpg", original_image);
+		imwrite("/storage/emulated/0/Diagnostics_Images/ProcessedImages/six.jpg", original_image); // TODO
 
 		return imagePath;
 	 }

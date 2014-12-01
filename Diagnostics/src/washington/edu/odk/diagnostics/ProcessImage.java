@@ -1,21 +1,35 @@
 package washington.edu.odk.diagnostics;
 
 import java.io.File; 
+
 import android.util.Log; 
+
 import java.util.Arrays;  
+
 import android.os.Bundle;
+
 import java.io.InputStream;
+
 import com.androidplot.xy.*; 
+
 import android.content.Intent; 
 import android.webkit.WebView;  
+
 import java.io.BufferedReader; 
+
 import android.graphics.Color;
+
 import java.io.FileInputStream; 
+
 import android.graphics.Bitmap;  
+
 import java.io.InputStreamReader;  
+
 import org.opencv.android.OpenCVLoader;  
 import org.opencv.android.BaseLoaderCallback;  
+
 import android.support.v7.app.ActionBarActivity; 
+
 import org.opencv.android.LoaderCallbackInterface; 
 
 
@@ -76,46 +90,56 @@ public class ProcessImage extends ActionBarActivity {
 	private void showImageAndPlot() {  
 		File temp = new File(path);
 		String two = temp.getName();
+		boolean okay = true;
 		
 		// Java native function - processes the image 
-		String output_path = findCirclesNative(path, two);  // TODO
-		path = "/storage/emulated/0/Output/six.jpg";		// TODO
+		String output_path = findCirclesNative(path, two);  // TODO - should modify okay
 		
 		
-		String html =   "<html>"
-				        + "<body bgcolor=\"White\">" 
-                        +    "<center> "
-                        +       "<img src=\"file:///" + path + "\" width=\"100%\"" + "> "
-                        +     "</center>"
-                        + "</body>" 
-                     + "</html>";
-		 
-		WebView myWebView = (WebView)this.findViewById(R.id.webview);
+		if(okay) {
+			path = "/storage/emulated/0/Diagnostics_Images/ProcessedImages/" + "six.jpg";		// TODO - change to path
+			
+			
+			String html =   "<html>"
+					        + "<body bgcolor=\"White\">" 
+	                        +    "<center> "
+	                        +       "<img src=\"file:///" + path + "\" width=\"100%\"" + "> "
+	                        +     "</center>"
+	                        + "</body>" 
+	                     + "</html>";
+			 
+			WebView myWebView = (WebView)this.findViewById(R.id.webview);
 
-		myWebView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null); 
-		myWebView.getSettings().setBuiltInZoomControls(true);
-		myWebView.getSettings().setUseWideViewPort(true);
-		myWebView.getSettings().setLoadWithOverviewMode(true);
-		
-		String value;
-		try {
-			value = getStringFromFile("/storage/emulated/0/Output/output.txt"); // TODO
-		} catch (Exception e) { 
-			value = "";
-			Log.e(TAG, e.toString());
-			e.printStackTrace();
+			myWebView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null); 
+			myWebView.getSettings().setBuiltInZoomControls(true);
+			myWebView.getSettings().setUseWideViewPort(true);
+			myWebView.getSettings().setLoadWithOverviewMode(true);
+			
+			String value;
+			try {
+				value = getStringFromFile("/storage/emulated/0/Output/output.txt"); // TODO
+			} catch (Exception e) { 
+				value = "";
+				Log.e(TAG, e.toString());
+				e.printStackTrace();
+			} 
+			 
+			String[] values = value.split("\n"); 
+			Number[] doubles = new Number[values.length];
+			
+			for (int i = 0; i < values.length; i++) {
+			    doubles[i] = Double.parseDouble(values[i]);
+			}
+			plotData(doubles);
+			
+		} else {  
+		 // Show error message;
 		} 
-		 
-		String[] values = value.split("\n"); 
-		Number[] doubles = new Number[values.length];
+	}
+
+	private void plotData(Number[] doubles) {
+		Number[] series1Numbers = doubles; 
 		
-		for (int i = 0; i < values.length; i++) {
-		    doubles[i] = Double.parseDouble(values[i]);
-		}
-		 
-		Number[] series1Numbers = doubles;
-		  
-		 
 		XYPlot mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
 		mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
 
@@ -126,17 +150,15 @@ public class ProcessImage extends ActionBarActivity {
 	  
 		// Format graph
 		LineAndPointFormatter series1Format = new LineAndPointFormatter(
-	            Color.rgb(0, 0, 0),                   // line color
-	            Color.rgb(0, 0, 0),                 // point color
-	            Color.rgb(34, 139, 34), null);          // fill color 
-		
-        mySimpleXYPlot.addSeries(series1, series1Format); 
-        
+	            Color.rgb(0, 0, 0),                  	 // line color
+	            Color.rgb(0, 0, 0),                		 // point color
+	            Color.rgb(34, 139, 34), null);           // fill color 
+		 
+		// Customizing the plot	
+        mySimpleXYPlot.addSeries(series1, series1Format);  
         mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE); 
         mySimpleXYPlot.getGraphWidget().getDomainOriginLinePaint().setColor(Color.BLACK);
-        mySimpleXYPlot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.BLACK);
-	
-	
+        mySimpleXYPlot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.BLACK); 
 	}
 
 	// Given a string of a filepath returns the contens of the file as a string 
