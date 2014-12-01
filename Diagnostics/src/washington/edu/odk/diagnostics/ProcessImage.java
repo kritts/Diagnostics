@@ -93,8 +93,8 @@ public class ProcessImage extends ActionBarActivity {
 		boolean okay = true;
 		
 		// Java native function - processes the image 
-		String output_path = findCirclesNative(path, two);  // TODO - should modify okay
-		
+		String output_path = findCirclesNative(path, two);  // TODO - should modify okay variable 
+		 
 		
 		if(okay) {
 			path = "/storage/emulated/0/Diagnostics_Images/ProcessedImages/" + "six.jpg";		// TODO - change to path
@@ -115,29 +115,30 @@ public class ProcessImage extends ActionBarActivity {
 			myWebView.getSettings().setUseWideViewPort(true);
 			myWebView.getSettings().setLoadWithOverviewMode(true);
 			
-			String value;
-			try {
-				value = getStringFromFile("/storage/emulated/0/Output/output.txt"); // TODO
-			} catch (Exception e) { 
-				value = "";
-				Log.e(TAG, e.toString());
-				e.printStackTrace();
-			} 
-			 
-			String[] values = value.split("\n"); 
-			Number[] doubles = new Number[values.length];
-			
-			for (int i = 0; i < values.length; i++) {
-			    doubles[i] = Double.parseDouble(values[i]);
-			}
-			plotData(doubles);
+			plotData(); // should take a string - path of the file 
 			
 		} else {  
 		 // Show error message;
 		} 
 	}
 
-	private void plotData(Number[] doubles) {
+	private void plotData() {
+		String value;
+		try {
+			value = getStringFromFile("/storage/emulated/0/Output/output.txt"); // TODO
+		} catch (Exception e) { 
+			value = "";
+			Log.e(TAG, e.toString());
+			e.printStackTrace();
+		} 
+		 
+		String[] values = value.split("\n"); 
+		Number[] doubles = new Number[values.length];
+		
+		for (int i = 0; i < values.length; i++) {
+		    doubles[i] = Double.parseDouble(values[i]);
+		}
+		
 		Number[] series1Numbers = doubles; 
 		
 		XYPlot mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
@@ -159,6 +160,8 @@ public class ProcessImage extends ActionBarActivity {
         mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE); 
         mySimpleXYPlot.getGraphWidget().getDomainOriginLinePaint().setColor(Color.BLACK);
         mySimpleXYPlot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.BLACK); 
+        // TODO - ask plot axis labels 
+        // TODO - get rid of legend 
 	}
 
 	// Given a string of a filepath returns the contens of the file as a string 
