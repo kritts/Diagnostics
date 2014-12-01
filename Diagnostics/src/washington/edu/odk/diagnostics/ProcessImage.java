@@ -102,6 +102,7 @@ public class ProcessImage extends ActionBarActivity {
 			value = getStringFromFile("/storage/emulated/0/Output/output.txt"); // TODO
 		} catch (Exception e) { 
 			value = "";
+			Log.e(TAG, e.toString());
 			e.printStackTrace();
 		} 
 		 
@@ -137,7 +138,17 @@ public class ProcessImage extends ActionBarActivity {
 	
 	
 	}
-		 
+
+	// Given a string of a filepath returns the contens of the file as a string 
+	public static String getStringFromFile(String filePath) throws Exception {
+	    File fl = new File(filePath);
+	    FileInputStream fin = new FileInputStream(fl);
+	    String ret = convertStreamToString(fin); 
+	    fin.close();        
+	    return ret;
+	}
+	 
+	// Given an input stream returns the contents as a string 
 	public static String convertStreamToString(InputStream is) throws Exception {
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 	    StringBuilder sb = new StringBuilder();
@@ -148,16 +159,7 @@ public class ProcessImage extends ActionBarActivity {
 	    reader.close();
 	    return sb.toString();
 	}
-
-
-	public static String getStringFromFile(String filePath) throws Exception {
-	    File fl = new File(filePath);
-	    FileInputStream fin = new FileInputStream(fl);
-	    String ret = convertStreamToString(fin); 
-	    fin.close();        
-	    return ret;
-	}
-	 
+	
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {

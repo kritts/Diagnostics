@@ -235,7 +235,7 @@ extern "C" {
         double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right
 
         ofstream outputFile;
-        outputFile.open ("/storage/emulated/0/Diagnostics_Images/GeneratedDataFiles/output.txt");
+        outputFile.open ("/storage/emulated/0/Diagnostics_Images/ProcessedData/output.txt");
 
 
 
