@@ -19,6 +19,21 @@ import android.support.v7.app.ActionBarActivity;
 import org.opencv.android.LoaderCallbackInterface; 
 
 // This file runs NDK code to process the chosen image 
+
+
+// File structure created: 
+// 		/storage/emulated/0/Diagnostics_Images is the primary folder with all of the content 
+//      /storage/emulated/0/Diagnostics_Images/ProcessedImages/*.jpg have processed images 
+// 	    /storage/emulated/0/Diagnostics_Images/ProcessedData/*.txt has data from the test strips 
+
+// Naming convention for images: 
+//      - Image taken on the device
+//			- .jpg -> MRSA_data_time.jpg
+//			- .txt -> MRSA_data_time.txt
+// 		- Image chosen from saved file on the device
+//			- .jpg -> MRSA_originalFileName.jpg
+// 			- .txt -> MRSA_originalFileName.txt
+
 public class ProcessImage extends ActionBarActivity {
 	private static final String TAG = "ProcessImage";
 
@@ -54,12 +69,8 @@ public class ProcessImage extends ActionBarActivity {
 		
 		Log.e(TAG, path);
 		if(resultCode == 2) {
-			path = "/storage/emulated/0/Diagnostics_Images" + path; 
-		} else {
-			// result path 
-		}
-		
-		
+			path = "/storage/emulated/0/Diagnostics_Images" + path;  // TODO: Make sure this is correct
+		}  
 	}
 		
 	
