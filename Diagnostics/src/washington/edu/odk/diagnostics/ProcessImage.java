@@ -18,8 +18,6 @@ import org.opencv.android.BaseLoaderCallback;
 import android.support.v7.app.ActionBarActivity; 
 import org.opencv.android.LoaderCallbackInterface; 
 
-// This file runs NDK code to process the chosen image 
-
 
 // File structure created: 
 // 		/storage/emulated/0/Diagnostics_Images is the primary folder with all of the content 
@@ -28,12 +26,13 @@ import org.opencv.android.LoaderCallbackInterface;
 
 // Naming convention for images: 
 //      - Image taken on the device
-//			- .jpg -> MRSA_data_time.jpg
-//			- .txt -> MRSA_data_time.txt
+//			- .jpg	 -> 	MRSA_data_time.jpg
+//			- .txt 	 -> 	MRSA_data_time.txt
 // 		- Image chosen from saved file on the device
-//			- .jpg -> MRSA_originalFileName.jpg
-// 			- .txt -> MRSA_originalFileName.txt
+//			- .jpg	 -> 	MRSA_originalFileName.jpg
+// 			- .txt 	 -> 	MRSA_originalFileName.txt
 
+/** This file runs NDK code to process the chosen image */ 
 public class ProcessImage extends ActionBarActivity {
 	private static final String TAG = "ProcessImage";
 
@@ -77,6 +76,8 @@ public class ProcessImage extends ActionBarActivity {
 	private void showImageAndPlot() {  
 		File temp = new File(path);
 		String two = temp.getName();
+		
+		// Java native function - processes the image 
 		String output_path = findCirclesNative(path, two);  // TODO
 		path = "/storage/emulated/0/Output/six.jpg";		// TODO
 		
@@ -148,43 +149,30 @@ public class ProcessImage extends ActionBarActivity {
 	    return sb.toString();
 	}
 
-	public static String getStringFromFile (String filePath) throws Exception {
+
+	public static String getStringFromFile(String filePath) throws Exception {
 	    File fl = new File(filePath);
 	    FileInputStream fin = new FileInputStream(fl);
 	    String ret = convertStreamToString(fin); 
 	    fin.close();        
 	    return ret;
 	}
-	
-	
-	
+	 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
+                case LoaderCallbackInterface.SUCCESS: {
                 	mOpenCVInitiated = true; 
                     // Load native library after OpenCV initialization
                     System.loadLibrary("process_image");
-                    Log.i(TAG, "OpenCV loaded successfully");
-
-                    showImageAndPlot();
-                    
+                    Log.i(TAG, "OpenCV loaded successfully"); 
+                    showImageAndPlot(); 
                 } break;
-                default:
-                {
+                default: {
                     super.onManagerConnected(status);
                 } break;
             }
         }
-    }; 
-    	
-	
-	/** Minimizes size of the bitmap so that it can be displayed in the app. */ 
-	private Bitmap halfSize(Bitmap input) { 
-		int height = input.getHeight();
-		int width = input.getWidth();  
-		return Bitmap.createScaledBitmap(input,  width/2, height/2, false);
-	}
+    };  
 }
