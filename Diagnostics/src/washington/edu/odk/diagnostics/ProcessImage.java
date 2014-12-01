@@ -1,39 +1,22 @@
 package washington.edu.odk.diagnostics;
 
- 
-import java.io.File;
-
-import android.util.Log;
-
-import java.util.Arrays; 
-
+import java.io.File; 
+import android.util.Log; 
+import java.util.Arrays;  
 import android.os.Bundle;
-
 import java.io.InputStream;
-
-import com.androidplot.xy.*;
-
+import com.androidplot.xy.*; 
 import android.content.Intent; 
-import android.webkit.WebView; 
-
+import android.webkit.WebView;  
 import java.io.BufferedReader; 
-import java.io.FileInputStream;
-
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.widget.ImageView; 
-
-import java.io.InputStreamReader; 
-
+import java.io.FileInputStream; 
+import android.graphics.Bitmap;  
+import java.io.InputStreamReader;  
 import org.opencv.android.OpenCVLoader;  
-import org.opencv.android.BaseLoaderCallback; 
-
+import org.opencv.android.BaseLoaderCallback;  
 import android.support.v7.app.ActionBarActivity; 
-
 import org.opencv.android.LoaderCallbackInterface; 
-
 
 // This file runs NDK code to process the chosen image 
 public class ProcessImage extends ActionBarActivity {
@@ -52,7 +35,7 @@ public class ProcessImage extends ActionBarActivity {
 	 *  If resultCode == 2, a local image from the device was chosen. */
 	private int resultCode;
 	
-	/** C++ code to process image*/
+	/** C++ code to process image */
 	public native String findCirclesNative(String imagePath, String fileName);
 	 
 	/** Called when the activity is first created. */
@@ -69,11 +52,13 @@ public class ProcessImage extends ActionBarActivity {
 		path  = extras.getString("path");  			//TODO: Make sure absolute path;  
 		resultCode = extras.getInt("resultCode");
 		
-		if(resultCode == 2) {
-			path = "/storage/emulated/0" + "/Diagnostics_Images" + path;
-			Log.e(TAG, path);
-		}
 		Log.e(TAG, path);
+		if(resultCode == 2) {
+			path = "/storage/emulated/0/Diagnostics_Images" + path; 
+		} else {
+			// result path 
+		}
+		
 		
 	}
 		
