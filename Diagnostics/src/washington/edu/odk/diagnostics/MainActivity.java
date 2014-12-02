@@ -60,7 +60,16 @@ public class MainActivity extends ActionBarActivity {
 						MainActivity.this.getString(R.string.select)), SELECT_PICTURE); 
 			} 
 		}); 
-        
+		final File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
+		imagesFolder.mkdirs(); 
+		// better naming TODO
+		File imagesFolder22 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "ProcessedImages");
+		
+		imagesFolder22.mkdirs(); 
+		
+		File imagesFolder3 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "ProcessedData");
+		imagesFolder3.mkdirs(); 
+		
         mCamera.setOnClickListener(new OnClickListener() { 
 			@Override
 			public void onClick(View arg) { 
@@ -81,8 +90,8 @@ public class MainActivity extends ActionBarActivity {
 				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 //intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 				
-				File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
-				imagesFolder.mkdirs(); 
+
+				
 			//TODO
 				File imagesFolder2 = new File(Environment.getExternalStorageDirectory(), "Output"); 
 				imagesFolder2.mkdirs(); 

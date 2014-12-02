@@ -66,6 +66,8 @@ public class ProcessImage extends ActionBarActivity {
 	/** C++ code to process image */
 	public native String findCirclesNative(String imagePath, String fileName);
 	 
+	private String mFileName;
+	
 	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,12 @@ public class ProcessImage extends ActionBarActivity {
 		path  = extras.getString("path");  			//TODO: Make sure absolute path;  
 		resultCode = extras.getInt("resultCode");
 		
-		Log.e(TAG, path);
+		
+		File temp = new File(path);
+		mFileName = temp.getName();
+		 
+		Log.e(TAG, mFileName);
+		
 		if(resultCode == 2) {
 			path = "/storage/emulated/0/Diagnostics_Images" + path;  // TODO: Make sure this is correct
 		}  
