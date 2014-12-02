@@ -86,7 +86,8 @@ public class ProcessImage extends ActionBarActivity {
 		}  
 	}
 		
-	
+	/** Called after OpenCV is initialized. Processes the chosen image if it is 
+	 *  a valid image */	
 	private void showImageAndPlot() {  
 		File temp = new File(path);
 		String two = temp.getName();
@@ -122,6 +123,7 @@ public class ProcessImage extends ActionBarActivity {
 		} 
 	}
 
+	/**  */
 	private void plotData() {
 		String value;
 		try {
