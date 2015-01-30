@@ -1,11 +1,11 @@
 currentfilename = imagefiles(i).name
 currentimage = imread(strcat(pathFiles,'\',currentfilename));
 
-% currentimage=imrotate(currentimage, 180);
 %Rotate image if needed
+%More work to be done to specify which direction to rotate
 [l,w,d] = size(currentimage);
 if w > l
-    currentimage = imrotate(currentimage,90);
+    currentimage = imrotate(currentimage,90);  
 end
 
 % Erode and dilate the image 
@@ -14,18 +14,18 @@ currentimage = imdilate(currentimage, se);
 currentimage = imerode(currentimage, se);
 
 % % Original image
-%   figure(1 + i * nfiles)  % Numbering ensures figures are not overwritten
-%   imshow(currentimage)
-%   title('Original Image')
+  figure(1 + i * nfiles)  % Numbering ensures figures are not overwritten
+  imshow(currentimage)
+  title('Original Image')
 
-% Blue Data
-blueChannel = currentimage(:, :, 1);
+% Red Data
+redChannel = currentimage(:, :, 1);
 
 % Increase contrast
-blueChannel = imadjust(blueChannel);
+redChannel = imadjust(redChannel);
 
 % New dimensions
-[height,width]=size(blueChannel);
+[height,width]=size(redChannel);
 widthLeft = round(width / 8);
 widthRight = round(width * 7/8);
 heightTop = round(height * 2/8); %3 "normal"
@@ -33,7 +33,7 @@ heightBottom = round(height * 4/8); %5 "normal"
 
 
 % Roughly cropped photo, red channel & cropped
-regionOfInterestRed = blueChannel(heightTop:heightBottom, widthLeft:widthRight);
+regionOfInterestRed = redChannel(heightTop:heightBottom, widthLeft:widthRight);
 croppedImage = currentimage(heightTop:heightBottom, widthLeft:widthRight, :);
 
 

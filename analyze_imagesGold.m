@@ -22,24 +22,22 @@ dirProcessedImages = strcat(pathFiles, '\Processed');
 %%%%%%%%%%%%%%%%
 % Parameters
 %%%%%%%%%%%%%%%%
-% % Location of blue color standard
-% blueRectCS = [235,35,30,30];
-% Location of gold color standard
-% blackRectCS = [235,35,30,30];
-% blackCircleCS=sqrt((blackRectCS-15).^2+(blackRectCS-15).^2)<=15;
-% Location of white color standard
-% whiteRectCS = [120,30,70,50];
+
 % Location of QR code
 qrCode = [12,135,340,240];
 % Location of test strip 
-testStrip1 = [425,155,210,85];
-testStrip2 = [425,250,210,85];
-testStrip3 = [740,155,210,85];
-testStrip4 = [740,250,210,85];
+% testStrip1 = [425,155,210,85];
+% testStrip2 = [425,250,210,85];
+% testStrip3 = [740,155,210,85];
+% testStrip4 = [740,250,210,85];
 % testStrip5 = [760,240,210,85];
 
 fullstrip1 = [450,50,130,325];
 fullstrip2 = [780,50,130,325];
+
+% %minimum size settings
+% fullstrip1 = [450,140,130,195];
+% fullstrip2 = [780,140,130,195];
 
 % Point at which we're calculating the slope & area under the curve
 minValue = 0.97;

@@ -1,6 +1,6 @@
 run(strcat(pathCommon, '\preprocessGold.m'));
 
-% Find circles
+% Find circles ie. fiducials
 [centers, radii, metric] = imfindcircles(croppedImage, [10 20], 'ObjectPolarity','dark', 'Sensitivity', 0.90); %normally with bwRed image, croppedImage for shadows
 
 figure(15 + i * nfiles)
@@ -138,6 +138,15 @@ if (length(centers) > 4)
         rectangle('Position', fullstrip1, 'LineWidth', 3, 'EdgeColor', 'y')
         rectangle('Position', fullstrip2, 'LineWidth', 3, 'EdgeColor', 'y')
         
+        %Background plot region
+%         rectangle('Position', [450,160,130,35], 'LineStyle', '-', 'EdgeColor', 'g');
+%         rectangle('Position', [450,232,130,16], 'LineStyle', '-', 'EdgeColor', 'g');
+%         rectangle('Position', [450,280,130,35], 'LineStyle', '-', 'EdgeColor', 'g');
+        
+%         %Test Area
+%         rectangle('Position', [450,175,130,65], 'EdgeColor','b');
+%         rectangle('Position', [450,240,130,70], 'EdgeColor', 'g');
+        
         figureTitle = strcat('ProcessedImg_', '1_', currentfilename);
         saveas(processedImg1,fullfile(strcat(dirProcessedImages, '\Location_Fiducials'), figureTitle),'jpg');
         
@@ -154,26 +163,6 @@ if (length(centers) > 4)
         xlabel('Pixel Position (top to bottom)')
         ylabel('Normalized Intensity')
         
-        % Plot images of 5 tests
-%         processedImage2 =  figure(10 + i * nfiles);
-%         title_2 = strcat('Transformed Image: ',strrep(currentfilename,'_','\_'));
-%         suptitle(title_2);
-%         hold on
-%         subplot(3,2,[1,2])
-%         imshow(resizedImage);
-%         subplot(3,2,3)
-%         imshow(firstRectangle)
-%         subplot(3,2,5)
-%         imshow(secondRectangle)
-%         subplot(3,2,4)
-%         imshow(thirdRectangle)
-%         subplot(3,2,6)
-%         imshow(fourthRectangle)
-%         subplot(4,2,6)
-%         imshow(fifthRectangle)
-        
-%         strFirst = strcat('ProcessedImg_', '2_', currentfilename);
-%         saveas(processedImage2,fullfile(strcat(dirProcessedImages, '\Location_Tests'), strFirst),'jpg');
         
 %             % Plot test strip intensities
 %             averageIntensities = figure(10 + i * nfiles);
@@ -266,10 +255,17 @@ if (length(centers) > 4)
     SD1 = 3*SDNewAvgIntensities1;
     SD2 = 3*SDNewAvgIntensities2;
     
+    %orginal
     TestAControl = find(NewAvgIntensities1(125:190) > SD1);
     TestBControl = find(NewAvgIntensities2(125:190) > SD1);
     TestA = find(NewAvgIntensities1(190:260) > SD1);
     TestB = find(NewAvgIntensities2(190:260) > SD2);
+
+%minimum test
+%     TestAControl = find(NewAvgIntensities1(1:65) > SD1);
+%     TestBControl = find(NewAvgIntensities2(1:65) > SD1);
+%     TestA = find(NewAvgIntensities1(65:135) > SD1);
+%     TestB = find(NewAvgIntensities2(65:135) > SD2);
     
        
     SumTestA = sum(NewAvgIntensities1(TestA));

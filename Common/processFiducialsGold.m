@@ -43,17 +43,6 @@ resizedImage = imresize(transformedImageCropped, [380, 1100], 'bilinear');
 %Find and Process Gold Standard
 run(strcat(pathCommon, '\ProcessGoldStandard.m'));
 
-% Blue color standard
-% RGB_blue_CS =  mean((mean(imcrop(resizedImage, blueRectCS))));
-% blue_CS = mean(RGB_blue_CS);
-
-% Location of white color standard
-% whiteRectCS = [(Aucenter(1)-40),Aucenter(2),70,50];
-
-% Black color standard
-% RGB_black_CS = mean((mean(imcrop(resizedImage, blackRectCS))));
-% black_CS = mean(RGB_black_CS);
-
 % White color standard
 RGB_white_CS = mean((mean(imcrop(resizedImage, whiteRectCS))));
 white_CS = mean(RGB_white_CS);

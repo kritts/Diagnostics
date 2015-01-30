@@ -36,7 +36,7 @@ extern "C" {
 		Mat image = imread(nativeString, 0);
 		Mat src = image;
 
-		Mat channel[3]; 		// Blue channel of image
+		Mat channel[3]; 		// Blue channel of image ****TODO: Change to green***
 	    split(image, channel);
 		Mat blue_channel = channel[0];
 

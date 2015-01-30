@@ -1,5 +1,5 @@
 % Finding and Processing the Gold Standard
-% Red Channel for Au Standard
+% Green Channel for Au Standard
 ROI_Green = resizedImage(:, :, 2);
 AdjustedROI = imadjust(ROI_Green, [.5;1], []); %[.7,1] regularly
 levelGreen = graythresh(AdjustedROI);
