@@ -181,6 +181,7 @@ extern "C" {
         // Point at the lower right
         Point maxPoint = averages.at(indexMax);
 
+        // Problem here
         original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
 
 
@@ -236,8 +237,6 @@ extern "C" {
 
         ofstream outputFile;
         outputFile.open ("/storage/emulated/0/Diagnostics_Images/ProcessedData/output.txt"); // TODO
-
-
 
         // copyOne & copyTwo
         for(int r = 0; r < copyOne.rows; r++) {
