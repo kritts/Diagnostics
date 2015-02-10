@@ -267,9 +267,10 @@ if (length(centers) > 4)
 %     TestA = find(NewAvgIntensities1(65:135) > SD1);
 %     TestB = find(NewAvgIntensities2(65:135) > SD2);
     
-       
-    SumTestA = sum(NewAvgIntensities1(TestA));
-    SumTestB = sum(NewAvgIntensities2(TestB));
+    TestValuesA = TestA + 190;
+    TestValuesB = TestB + 190;
+    SumTestA = sum(NewAvgIntensities1(TestValuesA));
+    SumTestB = sum(NewAvgIntensities2(TestValuesB));
       
     figure(22)
         subplot(2,1,1)

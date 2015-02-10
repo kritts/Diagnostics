@@ -36,23 +36,22 @@ extern "C" {
 		Mat image = imread(nativeString, 0);
 		Mat src = image;
 
-		Mat channel[3]; 		// Blue channel of image ****TODO: Change to green***
+		Mat channel[3];
 	    split(image, channel);
-		Mat blue_channel = channel[0];
+		Mat green_channel = channel[1]; // Green channel of image
 
 		// Height and width of the original picture
-		int rows = blue_channel.rows;
-		int cols = blue_channel.cols;
+		int rows = green_channel.rows;
+		int cols = green_channel.cols;
 
-		// Cropping the image slightly
+		// Cropping the image slightly TODO: Might have to update these
 		int originalX = cols / 8;
 		int originalY = rows * 3 / 8;
 		int width = cols * 7 / 8 - originalX;
 		int height = rows * 3 / 4 - rows * 2 / 8;
 
-
 		// Roughly cropping the image
-		Mat croppedImage = blue_channel(Rect(originalX, originalY, width, height));
+		Mat croppedImage = green_channel(Rect(originalX, originalY, width, height));
         Mat croppedBlurred;
 
 		original_image = original_image(Rect(originalX, originalY, width, height));
@@ -149,8 +148,6 @@ extern "C" {
          		   double length = abs((double) (one.x - two.x));
                    double width = abs((double) (one.y - two.y));
                    std::vector<Point> v(2);
-            //       v = { one, two };
-            //       std::vector<Point> temp {};
         		}
         	}
         }
@@ -259,7 +256,7 @@ extern "C" {
         outputFile.close();
 
         // Save images
-	//	imwrite("/storage/emulated/0/Output/one.jpg", blue_channel);
+	//	imwrite("/storage/emulated/0/Output/one.jpg", green_channel);
 	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);

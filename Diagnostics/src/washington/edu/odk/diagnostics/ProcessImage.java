@@ -1,15 +1,10 @@
 package washington.edu.odk.diagnostics;
 
-import java.io.File; 
-
+import java.io.File;
 import android.util.Log; 
-
 import java.util.Arrays;  
-
 import android.os.Bundle;
-
 import java.io.InputStream;
-
 import com.androidplot.xy.*; 
 
 import android.content.Intent; 
@@ -31,6 +26,11 @@ import org.opencv.android.BaseLoaderCallback;
 import android.support.v7.app.ActionBarActivity; 
 
 import org.opencv.android.LoaderCallbackInterface; 
+
+//TODO Things to add :
+       // Error messages when they are problems 
+	   // Save data- from all three colums
+	   // 
 
 
 // File structure created: 

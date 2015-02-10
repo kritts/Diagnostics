@@ -1,13 +1,10 @@
 package washington.edu.odk.diagnostics;
 
 import java.io.File;
-import java.util.Calendar;  
-
+import java.util.Calendar; 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.Cursor; 
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         
+        
         mGallery = (Button) findViewById(R.id.gallery);
         mCamera = (Button) findViewById(R.id.camera);
          
@@ -60,15 +57,7 @@ public class MainActivity extends ActionBarActivity {
 						MainActivity.this.getString(R.string.select)), SELECT_PICTURE); 
 			} 
 		}); 
-		final File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
-		imagesFolder.mkdirs(); 
-		// better naming TODO
-		File imagesFolder22 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "ProcessedImages");
-		
-		imagesFolder22.mkdirs(); 
-		
-		File imagesFolder3 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "ProcessedData");
-		imagesFolder3.mkdirs(); 
+        createFolderSetup();
 		
         mCamera.setOnClickListener(new OnClickListener() { 
 			@Override
@@ -91,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
                 //intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 				
 
-				
+				File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
 			//TODO
 				File imagesFolder2 = new File(Environment.getExternalStorageDirectory(), "Output"); 
 				imagesFolder2.mkdirs(); 
@@ -102,6 +91,23 @@ public class MainActivity extends ActionBarActivity {
                 startActivityForResult(intent, TAKE_PICTURE);
 			}  
 		}); 
+    }
+    
+    private void createFolderSetup() {
+    	File imFolder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Original_Images");
+		imFolder.mkdirs(); 
+        
+		File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
+		imagesFolder.mkdirs(); 
+		// better naming TODO
+		File imagesFolder22 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Images");
+		
+		imagesFolder22.mkdirs(); 
+		
+		File imagesFolder3 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Data");
+		imagesFolder3.mkdirs(); 
+			
+    	
     }
 
     /** Called after an image has been chosen. */

@@ -26,11 +26,11 @@ dirProcessedImages = strcat(pathFiles, '\Processed');
 % Location of QR code
 qrCode = [12,135,340,240];
 % Location of test strip 
-% testStrip1 = [425,155,210,85];
-% testStrip2 = [425,250,210,85];
-% testStrip3 = [740,155,210,85];
-% testStrip4 = [740,250,210,85];
-% testStrip5 = [760,240,210,85];
+testStrip1 = [425,155,210,85];
+testStrip2 = [425,250,210,85];
+testStrip3 = [740,155,210,85];
+testStrip4 = [740,250,210,85];
+testStrip5 = [760,240,210,85];
 
 fullstrip1 = [450,50,130,325];
 fullstrip2 = [780,50,130,325];
