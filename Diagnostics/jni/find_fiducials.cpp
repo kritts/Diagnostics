@@ -262,8 +262,8 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
-	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
-		imwrite("/storage/sdcard0/Diagnostics_Tmages/ProcessedImages/temp.jpg", original_image); // TODO
+		imwrite("/storage/emulated/0/Diagnostics_Images/ProcessedImages/six.jpg", original_image); // TODO
+
 		return imagePath;
 	 }
 }

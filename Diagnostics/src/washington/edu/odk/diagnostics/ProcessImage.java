@@ -98,7 +98,7 @@ public class ProcessImage extends ActionBarActivity {
 		mFileName = src.getName(); 
 		
 		File dest = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/Original_Images/" + src.getName());
-		
+		 
 		FileChannel source = null;
         FileChannel destination = null;
         try {
@@ -119,7 +119,7 @@ public class ProcessImage extends ActionBarActivity {
 			e.printStackTrace();
 		}
          
-		Log.e(TAG, dest.getAbsolutePath());
+		Log.e(TAG, mFileName);
 		
 		if(resultCode == 2) {
 			path = Environment.getExternalStorageDirectory().getAbsolutePath() + "Diagnostics_Images" + path;  // TODO: Make sure this is correct
@@ -142,9 +142,11 @@ public class ProcessImage extends ActionBarActivity {
 	/** Called after OpenCV is initialized. Processes the chosen image if it is 
 	 *  a valid image */	
 	private void showImageAndPlot() { 
-		String location = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images" + this.mFileName;
+		String location = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/";
 		 
 		boolean okay = true;
+		
+		
 		
 		// Java native function - processes the image 
 		String output_path = findCirclesNative(location, this.mFileName);  // TODO - should modify okay variable 
@@ -169,7 +171,7 @@ public class ProcessImage extends ActionBarActivity {
 			myWebView.getSettings().setUseWideViewPort(true);
 			myWebView.getSettings().setLoadWithOverviewMode(true);
 			
-		//	plotData(); // should take a string - path of the file 
+			plotData(); // should take a string - path of the file 
 			
 		} else {  
 		 // Show error message;
