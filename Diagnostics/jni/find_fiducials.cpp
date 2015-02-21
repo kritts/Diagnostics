@@ -31,7 +31,8 @@ extern "C" {
 
 		 // Original read in image, since flag (1) is > 0 return a 3-channel color image.
 		Mat original_image = imread(nativeString, 1);
-
+		flip(original_image, original_image, 1);
+/*
 		// Grayscale image
 		Mat image = imread(nativeString, 0);
 		Mat src = image;
@@ -254,15 +255,15 @@ extern "C" {
         __android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "WHITE BLACK %f %f", valDark, valWhite);
 
         outputFile.close();
-
+*/
         // Save images
 	//	imwrite("/storage/emulated/0/Output/one.jpg", green_channel);
 	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
-		imwrite("/storage/emulated/0/Diagnostics_Images/ProcessedImages/six.jpg", original_image); // TODO
-
+	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
+		imwrite("/storage/sdcard0/Diagnostics_Tmages/ProcessedImages/temp.jpg", original_image); // TODO
 		return imagePath;
 	 }
 }
