@@ -29,9 +29,15 @@ extern "C" {
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 
+		//imagePath,  fileName
+
+	//	std::ostringstream oss;
+	//	oss << imagePath << "Original_Images/" << fileName;
+	//	std::string name = oss.str();
+
 		 // Original read in image, since flag (1) is > 0 return a 3-channel color image.
-		Mat original_image = imread(nativeString, 1);
-		flip(original_image, original_image, 1);
+		Mat original_image = imread(name, 1);
+	//	flip(original_image, original_image, 1);
 /*
 		// Grayscale image
 		Mat image = imread(nativeString, 0);
@@ -262,8 +268,9 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
-		imwrite("/storage/emulated/0/Diagnostics_Images/ProcessedImages/six.jpg", original_image); // TODO
-
+	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
+		imwrite("/storage/sdcard0/Diagnostics_Images/ProcessedImages/temp.jpg", original_image); // TODO
+	//	__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "done!");
 		return imagePath;
 	 }
 }
