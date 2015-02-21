@@ -1,10 +1,19 @@
 package washington.edu.odk.diagnostics;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.util.Log; 
+
 import java.util.Arrays;  
+
 import android.os.Bundle;
+import android.os.Environment;
+
 import java.io.InputStream;
+
 import com.androidplot.xy.*; 
 
 import android.content.Intent; 
@@ -12,13 +21,16 @@ import android.webkit.WebView;
 
 import java.io.BufferedReader; 
 
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 
 import java.io.FileInputStream; 
 
 import android.graphics.Bitmap;  
 
 import java.io.InputStreamReader;  
+import java.nio.channels.FileChannel;
 
 import org.opencv.android.OpenCVLoader;  
 import org.opencv.android.BaseLoaderCallback;  
@@ -81,27 +93,61 @@ public class ProcessImage extends ActionBarActivity {
 		Bundle extras = intent.getExtras();  
 		path  = extras.getString("path");  			//TODO: Make sure absolute path;  
 		resultCode = extras.getInt("resultCode");
+    
+		File src = new File(path);
+		mFileName = src.getName(); 
 		
-		
-		File temp = new File(path);
-		mFileName = temp.getName();
+		File dest = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/Original_Images/" + src.getName());
 		 
+		FileChannel source = null;
+        FileChannel destination = null;
+        try {
+			source = new FileInputStream(src).getChannel();
+			destination = new FileOutputStream(dest).getChannel();
+	        if (destination != null && source != null) {
+	            destination.transferFrom(source, 0, source.size());
+	        }
+	        if (source != null) {
+	            source.close();
+	        }
+	        if (destination != null) {
+	            destination.close();
+	        }
+		} catch (FileNotFoundException e) { 
+			e.printStackTrace();
+		} catch (IOException e) { 
+			e.printStackTrace();
+		}
+         
 		Log.e(TAG, mFileName);
 		
 		if(resultCode == 2) {
-			path = "/storage/emulated/0/Diagnostics_Images" + path;  // TODO: Make sure this is correct
+			path = Environment.getExternalStorageDirectory().getAbsolutePath() + "Diagnostics_Images" + path;  // TODO: Make sure this is correct
 		}  
+	}
+	 
+	private void storeImage(Bitmap image, String path) {
+	    File pictureFile = new File(path);
+	    try {
+	        FileOutputStream fos = new FileOutputStream(pictureFile);
+	        image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+	        fos.close();
+	    } catch (FileNotFoundException e) {
+	        Log.d(TAG, "File not found: " + e.getMessage());
+	    } catch (IOException e) {
+	        Log.d(TAG, "Error accessing file: " + e.getMessage());
+	    }  
 	}
 		
 	/** Called after OpenCV is initialized. Processes the chosen image if it is 
 	 *  a valid image */	
-	private void showImageAndPlot() {  
-		File temp = new File(path);
-		String two = temp.getName();
+	private void showImageAndPlot() { 
+		String location = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/Original_Images/" + this.mFileName;
+		 
 		boolean okay = true;
 		
 		// Java native function - processes the image 
-		String output_path = findCirclesNative(path, two);  // TODO - should modify okay variable 
+		String output_path = findCirclesNative(location, this.mFileName);  // TODO - should modify okay variable 
 		 
 		
 		if(okay) {

@@ -70,21 +70,15 @@ public class MainActivity extends ActionBarActivity {
 				String time = c.get(Calendar.HOUR_OF_DAY) + "_" 
 						+ c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
 
-				mImagePath = "/" + date + "__" + time;
-				 
+				mImagePath = "/" + date + "__" + time; 
 				mImagePath += ".jpg"; 
-				 
-				 
+				  
 			    Uri imageUri = Uri.fromFile(new File(mImagePath));
 				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                //intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-				
-
-				File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
-			//TODO
-				File imagesFolder2 = new File(Environment.getExternalStorageDirectory(), "Output"); 
-				imagesFolder2.mkdirs(); 
-				File photo = new File(imagesFolder, mImagePath + ".jpg");
+  
+				File diagnostics_folder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images"); 
+ 
+				File photo = new File(diagnostics_folder, mImagePath + ".jpg");
 				Uri uriSavedImage = Uri.fromFile(photo);
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);  
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -94,20 +88,17 @@ public class MainActivity extends ActionBarActivity {
     }
     
     private void createFolderSetup() {
-    	File imFolder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Original_Images");
-		imFolder.mkdirs(); 
+    	File orig_imgs_folder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Original_Images");
+		orig_imgs_folder.mkdirs(); 
         
-		File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
-		imagesFolder.mkdirs(); 
-		// better naming TODO
-		File imagesFolder22 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Images");
+		File diagnostics_imgs_folder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
+		diagnostics_imgs_folder.mkdirs();  
 		
-		imagesFolder22.mkdirs(); 
+		File proc_imgs_folder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Images"); 
+		proc_imgs_folder.mkdirs(); 
 		
-		File imagesFolder3 = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Data");
-		imagesFolder3.mkdirs(); 
-			
-    	
+		File proc_data_folder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Data");
+		proc_data_folder.mkdirs();   
     }
 
     /** Called after an image has been chosen. */
