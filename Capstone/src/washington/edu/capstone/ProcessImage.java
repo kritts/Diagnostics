@@ -92,16 +92,9 @@ public class ProcessImage extends ActionBarActivity {
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
+		path  = extras.getString("path");   
 		
-		if(resultCode == 1) {  
-			path  = extras.getString("path");  			//TODO: Make sure absolute path;
-		} else { 
-			path = intent.getStringExtra("image_file");
-			Log.e("PHOTO TAKEN", ": " + path); 
-		}
-		
-		
-		Log.e(TAG, "!: " + path);
+		Log.e(TAG, ": " + path);
 		resultCode = extras.getInt("resultCode");
     
 		File src = new File(path);

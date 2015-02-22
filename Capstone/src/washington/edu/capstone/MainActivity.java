@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
         mCamera.setOnClickListener(new OnClickListener() { 
 			@Override
 			public void onClick(View arg) { 
-				Calendar c = Calendar.getInstance();
+				/*	Calendar c = Calendar.getInstance();
 				
 				// Name of image file is the data and then time the image was taken. 
 				String date = c.get(Calendar.YEAR) + "_"+ c.get(Calendar.MONTH)
@@ -75,10 +75,11 @@ public class MainActivity extends ActionBarActivity {
 				mImagePath += ".jpg"; 
 				
 				File diagnostics_folder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images/Original_Images/"); 
-				File photo = new File(diagnostics_folder, mImagePath);  
+				File photo = new File(diagnostics_folder, mImagePath);   
 				
+				*/
 				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
-				intent.putExtra("image_file", photo.getAbsolutePath());  
+			//	intent.putExtra(MediaStore.EXTRA_OUTPUT, photo.getAbsolutePath());   
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, TAKE_PICTURE);
 			}  
@@ -112,7 +113,8 @@ public class MainActivity extends ActionBarActivity {
 					selectedImagePath = getPath(selectedImageUri); 
 				} else {
 					selectedImagePath = mImagePath; // shouldn't be null
-				}
+				} 
+				
 				Intent intent = new Intent(MainActivity.this, ProcessImage.class);
 				intent.putExtra("resultCode", requestCode); 
 				intent.putExtra("path", selectedImagePath); 
