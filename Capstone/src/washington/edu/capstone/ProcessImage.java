@@ -92,9 +92,7 @@ public class ProcessImage extends ActionBarActivity {
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
-		path  = extras.getString("path");   
-		
-		Log.e(TAG, ": " + path);
+		path  = extras.getString("path"); 
 		resultCode = extras.getInt("resultCode");
     
 		File src = new File(path);
@@ -120,13 +118,7 @@ public class ProcessImage extends ActionBarActivity {
 			e.printStackTrace();
 		} catch (IOException e) { 
 			e.printStackTrace();
-		}
-         
-		Log.e(TAG, mFileName);
-		
-		if(resultCode == 2) {
-			path = Environment.getExternalStorageDirectory().getAbsolutePath() + "Diagnostics_Images" + path;  // TODO: Make sure this is correct
-		}  
+		} 
 	}
 	 
 	private void storeImage(Bitmap image, String path) {
