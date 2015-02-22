@@ -40,35 +40,40 @@ extern "C" {
 
 		transpose(original_image, original_image);
 	    flip(original_image, original_image, -1);
-		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "here1");
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
 
 		// Grayscale image
-		Mat image = imread(nativeString, 0);
+		Mat image = imread(nativeString, 1);
+		transpose(image, image);
+		flip(image, image, -1);
+
 		Mat src = image;
 
 		Mat channel[3];
 	    split(image, channel);
-	   		Mat green_channel = channel[1]; // Green channel of image
+	   	Mat green_channel = channel[1]; // Green channel of image
+
 
 		// Height and width of the original picture
 		int rows = green_channel.rows;
 		int cols = green_channel.cols;
 
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Looked at green channel.");
 
-		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "here2");
-
-		// Cropping the image slightly TODO: Might have to update these
+		// Cropping the image slightly 								TODO: Might have to update these
 		int originalX = cols / 8;
 		int originalY = rows * 3 / 8;
 		int width = cols * 7 / 8 - originalX;
 		int height = rows * 3 / 4 - rows * 2 / 8;
 
-		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "here1");
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Cropped image.");
 		// Roughly cropping the image
 		Mat croppedImage = green_channel(Rect(originalX, originalY, width, height));
         Mat croppedBlurred;
 
 		original_image = original_image(Rect(originalX, originalY, width, height));
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Cropped original image.");
+
 
 		// Blur the image
 	    //GaussianBlur(croppedImage, croppedBlurred, Size(1, 1), 10.0);
@@ -78,13 +83,14 @@ extern "C" {
 
 		// Additional threshold
 		//croppedImage = croppedImage > 100;
-
 		// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
-		threshold(croppedImage, croppedBlurred, // input and output
+				threshold(croppedImage, croppedBlurred, // input and output
 				  50,							  // treshold value
 				  255,							  // max binary value
 				  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
 
+
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Checking above threshold value.");
 
 		// Parameters
 		int erosion_size = 3;
@@ -94,6 +100,7 @@ extern "C" {
 		erode(croppedBlurred, croppedBlurred, element);
 		dilate(croppedBlurred, croppedBlurred, element);
 
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Finding fiducials.");
 		// Finding contours
 		// Thresholds
 		int thresh = 50;
@@ -115,13 +122,15 @@ extern "C" {
 		// Draw contours
 		Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
 
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Drawing contours");
+
 		vector<vector<Point> > foundContours;
 
 		for (int j = 0; j < contours.size(); j++) {
 			area = contourArea(contours[j]);
 			approxPolyDP(contours[j], approx, 5, true);
-
-			if (area > 300) {
+			if (area > 500 && area < 1200) {
+				__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v3", "%f",  area);
 				Scalar color = Scalar(222, 20, 20);
                 foundContours.push_back(contours[j]);
 				drawContours(drawing, contours, j, Scalar(222, 20, 20), CV_FILLED);
@@ -133,6 +142,7 @@ extern "C" {
 			}
 	    }
 
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Averaging contours");
         vector<Point> averages;
 
 		for (int j = 0; j < foundContours.size(); j++) {
@@ -149,6 +159,8 @@ extern "C" {
 
 		}
 
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Checking lengths.");
+/*
 		// At the moment, this doesn't do anything
 		// It's purpose is to find spots that are the best fit - by looking at the
 		// area created by the four points.
@@ -165,11 +177,14 @@ extern "C" {
         		}
         	}
         }
-
+*/
 		int minSum = 10000;
 		int maxSum = 0;
 		int indexMin = 0;
 		int indexMax = 0;
+
+
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Starting min/max index checks.");
 
         for(int p = 0; p < averages.size(); p++) {
            Point current = averages.at(p);
@@ -194,7 +209,7 @@ extern "C" {
 
         // Problem here
         original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
-
+        /*
 
         Mat stdDark;
         original_image.copyTo(stdDark);
@@ -254,21 +269,21 @@ extern "C" {
         	double current = 0.0;
         	for(int s = 0; s < copyOne.cols; s++) {
         		Vec3b tempColor = copyOne.at<Vec3b>(Point(s,r));
-        		//__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "avg %d", tempColor[0]);
+        		//__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "avg %d", tempColor[0]);
         		current += tempColor[0];
         	}
         	current = current / (double) copyOne.cols;
-    	//	__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "avg %d", current);
+    	//	__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "avg %d", current);
         	current = (current - valDark) / (valWhite - valDark);
-    		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "VALUE OF INT %f", current);
+    		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "VALUE OF INT %f", current);
     		outputFile << current;
     		outputFile << "\n";
         }
 
-        __android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "WHITE BLACK %f %f", valDark, valWhite);
+        __android_log_print(ANDROID_LOG_ERROR, "C++ Code", "WHITE BLACK %f %f", valDark, valWhite);
 
-        outputFile.close();
-*/
+        outputFile.close(); */
+
         // Save images
 	//	imwrite("/storage/emulated/0/Output/one.jpg", green_channel);
 	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
@@ -276,8 +291,8 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
 	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
-		imwrite("/storage/sdcard0/Diagnostics_Images/ProcessedImages/temp.jpg", original_image); // TODO
-	//	__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "done!");
+		imwrite("/storage/sdcard0/Diagnostics_Images/Processed_Images/temp.jpg", drawing); // TODO
+	//	__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "done!");
 		return imagePath;
 	 }
 }

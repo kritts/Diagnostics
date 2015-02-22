@@ -155,7 +155,7 @@ public class ProcessImage extends ActionBarActivity {
 		 
 		
 		if(okay) {
-			path = "/storage/emulated/0/Diagnostics_Images/ProcessedImages/" + "six.jpg";		// TODO - change to path
+			path = "/storage/sdcard0/Diagnostics_Images/Processed_Images/" + "temp.jpg";		// TODO - change to path
 			
 			
 			String html =   "<html>"

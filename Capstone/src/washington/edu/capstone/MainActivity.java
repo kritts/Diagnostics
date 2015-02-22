@@ -77,15 +77,15 @@ public class MainActivity extends ActionBarActivity {
     }
     
     private void createFolderSetup() {
-    	File orig_imgs_folder = new File(
-    			Environment.getExternalStorageDirectory() + "/Diagnostics_Images",
-    			"Original_Images");
-		orig_imgs_folder.mkdirs(); 
-        
 		File diagnostics_imgs_folder = new File(
 				Environment.getExternalStorageDirectory(), "Diagnostics_Images");
 		diagnostics_imgs_folder.mkdirs();  
 		
+    	File orig_imgs_folder = new File(
+    			Environment.getExternalStorageDirectory() + "/Diagnostics_Images",
+    			"Original_Images");
+		orig_imgs_folder.mkdirs(); 
+         
 		File proc_imgs_folder = new File(
 				Environment.getExternalStorageDirectory() + "/Diagnostics_Images",
 				"Processed_Images"); 
