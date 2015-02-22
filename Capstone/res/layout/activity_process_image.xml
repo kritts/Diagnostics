@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
+	 
+	<WebView 
+	    android:id="@+id/webview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:background="#000000"
+	    android:scrollbars="none"  
+	    android:layout_centerVertical="true" /> 
+	    
+ <com.androidplot.xy.XYPlot
+    android:id="@+id/mySimpleXYPlot"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    title=" "/>
+	
+ </LinearLayout>
