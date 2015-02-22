@@ -129,8 +129,8 @@ extern "C" {
 		for (int j = 0; j < contours.size(); j++) {
 			area = contourArea(contours[j]);
 			approxPolyDP(contours[j], approx, 5, true);
-			if (area > 500 && area < 1200) {
-				__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v3", "%f",  area);
+			if (area > 300 && area < 1500) {									// TODO
+				__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v5", "%f",  area);
 				Scalar color = Scalar(222, 20, 20);
                 foundContours.push_back(contours[j]);
 				drawContours(drawing, contours, j, Scalar(222, 20, 20), CV_FILLED);
@@ -202,13 +202,14 @@ extern "C" {
            }
         }
 
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v2", "Finished min/max index checks.");
         // Point at the upper left
         Point minPoint = averages.at(indexMin);
         // Point at the lower right
         Point maxPoint = averages.at(indexMax);
 
-        // Problem here
-        original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, maxPoint.x - minPoint.x + 20, maxPoint.y - minPoint.y + 20));
+        // Problem here TODO
+        original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, minPoint.x + 900, minPoint.y + 250));
         /*
 
         Mat stdDark;
@@ -291,7 +292,7 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
 	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
-		imwrite("/storage/sdcard0/Diagnostics_Images/Processed_Images/temp.jpg", drawing); // TODO
+		imwrite("/storage/sdcard0/Diagnostics_Images/Processed_Images/temp.jpg", original_image); // TODO
 	//	__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "done!");
 		return imagePath;
 	 }
