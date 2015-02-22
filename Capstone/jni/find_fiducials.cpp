@@ -210,7 +210,7 @@ extern "C" {
 
         // Problem here TODO
         original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, minPoint.x + 900, minPoint.y + 250));
-        /*
+
 
         Mat stdDark;
         original_image.copyTo(stdDark);
@@ -233,18 +233,18 @@ extern "C" {
 		//rectangle( original_image, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 		// color standard, dark
-		rectangle( original_image, Point( 190, 50 ), Point( 200, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
+		//rectangle( original_image, Point( 190, 50 ), Point( 200, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
 		// color standard, white
-		rectangle( original_image, Point( 120, 50 ), Point( 130, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
+		//rectangle( original_image, Point( 120, 50 ), Point( 130, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 
 		// dark color standard
-		Rect darkStd(Point(190, 50), Point(200, 60));
-		stdDark = stdDark(darkStd);
+		//Rect darkStd(Point(190, 50), Point(200, 60));
+		//stdDark = stdDark(darkStd);
 
 		// white color standard
-		Rect whiteStd(Point( 120, 50 ), Point( 130, 60 ));
-		stdWhite = stdWhite(whiteStd);
+		//Rect whiteStd(Point( 120, 50 ), Point( 130, 60 ));
+		//stdWhite = stdWhite(whiteStd);
 
 		// first test strip
 		Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
@@ -254,6 +254,9 @@ extern "C" {
         Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
         copyTwo = copyTwo(colorSecond);
 
+        __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v2", "Found locations of test strips.");
+
+        /*
 
         Scalar avgDark = cv::mean(stdDark);
         Scalar avgWhite = cv::mean(stdWhite);
