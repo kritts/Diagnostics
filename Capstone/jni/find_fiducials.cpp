@@ -37,20 +37,25 @@ extern "C" {
 
 		 // Original read in image, since flag (1) is > 0 return a 3-channel color image.
 		Mat original_image = imread(nativeString, 1);
-	//	flip(original_image, original_image, 1);
-		__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "here");
-/*
+
+		transpose(original_image, original_image);
+	    flip(original_image, original_image, -1);
+		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "here1");
+
 		// Grayscale image
 		Mat image = imread(nativeString, 0);
 		Mat src = image;
 
 		Mat channel[3];
 	    split(image, channel);
-		Mat green_channel = channel[1]; // Green channel of image
+	   		Mat green_channel = channel[1]; // Green channel of image
 
 		// Height and width of the original picture
 		int rows = green_channel.rows;
 		int cols = green_channel.cols;
+
+
+		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "here2");
 
 		// Cropping the image slightly TODO: Might have to update these
 		int originalX = cols / 8;
@@ -58,6 +63,7 @@ extern "C" {
 		int width = cols * 7 / 8 - originalX;
 		int height = rows * 3 / 4 - rows * 2 / 8;
 
+		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "here1");
 		// Roughly cropping the image
 		Mat croppedImage = green_channel(Rect(originalX, originalY, width, height));
         Mat croppedBlurred;
@@ -172,12 +178,12 @@ extern "C" {
         	   minSum = sum;
         	   indexMin = p;
 
-				__android_log_print(ANDROID_LOG_INFO, "min index", "current x and y - %d and %d",  current.x, current.y);
+				__android_log_print(ANDROID_LOG_ERROR, "min index", "current x and y - %d and %d",  current.x, current.y);
            }
            if(sum >= maxSum) {
         	   maxSum = sum;
         	   indexMax = p;
-        	   __android_log_print(ANDROID_LOG_INFO, "max index", "current x and y - %d and %d",  current.x, current.y);
+        	   __android_log_print(ANDROID_LOG_ERROR, "max index", "current x and y - %d and %d",  current.x, current.y);
            }
         }
 
@@ -248,18 +254,18 @@ extern "C" {
         	double current = 0.0;
         	for(int s = 0; s < copyOne.cols; s++) {
         		Vec3b tempColor = copyOne.at<Vec3b>(Point(s,r));
-        		//__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "avg %d", tempColor[0]);
+        		//__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "avg %d", tempColor[0]);
         		current += tempColor[0];
         	}
         	current = current / (double) copyOne.cols;
-    	//	__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "avg %d", current);
+    	//	__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "avg %d", current);
         	current = (current - valDark) / (valWhite - valDark);
-    		__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "VALUE OF INT %f", current);
+    		__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "VALUE OF INT %f", current);
     		outputFile << current;
     		outputFile << "\n";
         }
 
-        __android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "WHITE BLACK %f %f", valDark, valWhite);
+        __android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "WHITE BLACK %f %f", valDark, valWhite);
 
         outputFile.close();
 */
@@ -271,7 +277,7 @@ extern "C" {
 
 	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
 		imwrite("/storage/sdcard0/Diagnostics_Images/ProcessedImages/temp.jpg", original_image); // TODO
-	//	__android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "done!");
+	//	__android_log_print(ANDROID_LOG_ERROR, "AVERAGE VALUES", "done!");
 		return imagePath;
 	 }
 }
