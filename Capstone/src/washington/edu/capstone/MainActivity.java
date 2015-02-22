@@ -1,16 +1,15 @@
 package washington.edu.capstone;
 
-import java.io.File;
-import java.util.Calendar; 
-import android.content.Intent;
-import android.database.Cursor; 
+import java.io.File; 
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore; 
 import android.util.Log;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.content.Intent;
+import android.os.Environment;
+import android.database.Cursor; 
+import android.provider.MediaStore; 
 import android.view.View.OnClickListener;
 import android.support.v7.app.ActionBarActivity;
 
@@ -35,9 +34,11 @@ public class MainActivity extends ActionBarActivity {
 	 *  this way we know we're looking at the response from our own action.  */
 	private static final int SELECT_PICTURE = 1;
 	
-	/** */
+	/** The action code we use in our intent, 
+	 *  this way we know we're looking at the response from our own action.  */
 	private static final int TAKE_PICTURE = 2;
 	
+	/** Path of the image currently being processed. */
 	private String mImagePath = null;
 	    
 	
@@ -52,34 +53,23 @@ public class MainActivity extends ActionBarActivity {
         mGallery.setOnClickListener(new OnClickListener() { 
 			@Override
 			public void onClick(View arg) { 
-				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResult(Intent.createChooser(i,
-						MainActivity.this.getString(R.string.select)), SELECT_PICTURE); 
+				Intent i = new Intent(Intent.ACTION_PICK,android
+						.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				
+				startActivityForResult(
+						Intent.createChooser(i,
+						MainActivity.this.getString(R.string.select)), 
+						SELECT_PICTURE); 
 			} 
 		}); 
         createFolderSetup();
-		
-        // TODO: 
+		 
         mCamera.setOnClickListener(new OnClickListener() { 
 			@Override
-			public void onClick(View arg) { 
-				/*	Calendar c = Calendar.getInstance();
+			public void onClick(View arg) {  
+				Intent intent = new Intent(android.provider.
+										   MediaStore.ACTION_IMAGE_CAPTURE);
 				
-				// Name of image file is the data and then time the image was taken. 
-				String date = c.get(Calendar.YEAR) + "_"+ c.get(Calendar.MONTH)
-						+ "_" + c.get(Calendar.DAY_OF_MONTH);
-				String time = c.get(Calendar.HOUR_OF_DAY) + "_" 
-						+ c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
-
-				mImagePath = "/" + date + "__" + time; 
-				mImagePath += ".jpg"; 
-				
-				File diagnostics_folder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images/Original_Images/"); 
-				File photo = new File(diagnostics_folder, mImagePath);   
-				
-				*/
-				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
-			//	intent.putExtra(MediaStore.EXTRA_OUTPUT, photo.getAbsolutePath());   
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, TAKE_PICTURE);
 			}  
@@ -87,16 +77,23 @@ public class MainActivity extends ActionBarActivity {
     }
     
     private void createFolderSetup() {
-    	File orig_imgs_folder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Original_Images");
+    	File orig_imgs_folder = new File(
+    			Environment.getExternalStorageDirectory() + "/Diagnostics_Images",
+    			"Original_Images");
 		orig_imgs_folder.mkdirs(); 
         
-		File diagnostics_imgs_folder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images");
+		File diagnostics_imgs_folder = new File(
+				Environment.getExternalStorageDirectory(), "Diagnostics_Images");
 		diagnostics_imgs_folder.mkdirs();  
 		
-		File proc_imgs_folder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Images"); 
+		File proc_imgs_folder = new File(
+				Environment.getExternalStorageDirectory() + "/Diagnostics_Images",
+				"Processed_Images"); 
 		proc_imgs_folder.mkdirs(); 
 		
-		File proc_data_folder = new File(Environment.getExternalStorageDirectory() + "/Diagnostics_Images", "Processed_Data");
+		File proc_data_folder = new File(
+				Environment.getExternalStorageDirectory() + "/Diagnostics_Images",
+				"Processed_Data");
 		proc_data_folder.mkdirs();   
     }
 
@@ -112,7 +109,9 @@ public class MainActivity extends ActionBarActivity {
 					Uri selectedImageUri = data.getData();
 					selectedImagePath = getPath(selectedImageUri); 
 				} else {
-					selectedImagePath = mImagePath; // shouldn't be null
+					 // shouldn't be null
+					selectedImagePath = Environment.getExternalStorageDirectory()
+							+ "/Diagnostics_Images/Original_Images/" + mImagePath;
 				} 
 				
 				Intent intent = new Intent(MainActivity.this, ProcessImage.class);
