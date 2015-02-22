@@ -1,9 +1,7 @@
 package washington.edu.capstone;
 
-
 import java.io.File;
 import java.util.Calendar; 
-import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.database.Cursor; 
 import android.net.Uri;
@@ -12,8 +10,9 @@ import android.os.Environment;
 import android.provider.MediaStore; 
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.view.View.OnClickListener;
+import android.support.v7.app.ActionBarActivity;
 
 /** 
  * This is the home page of the MRSA Diagnostics app. 
@@ -60,6 +59,7 @@ public class MainActivity extends ActionBarActivity {
 		}); 
         createFolderSetup();
 		
+        // TODO: 
         mCamera.setOnClickListener(new OnClickListener() { 
 			@Override
 			public void onClick(View arg) { 
@@ -73,15 +73,12 @@ public class MainActivity extends ActionBarActivity {
 
 				mImagePath = "/" + date + "__" + time; 
 				mImagePath += ".jpg"; 
-				  
-			    Uri imageUri = Uri.fromFile(new File(mImagePath));
-				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-  
-				File diagnostics_folder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images"); 
- 
-				File photo = new File(diagnostics_folder, mImagePath + ".jpg");
-				Uri uriSavedImage = Uri.fromFile(photo);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);  
+				
+				File diagnostics_folder = new File(Environment.getExternalStorageDirectory(), "Diagnostics_Images/Original_Images/"); 
+				File photo = new File(diagnostics_folder, mImagePath);  
+				
+				Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
+				intent.putExtra("image_file", photo.getAbsolutePath());  
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, TAKE_PICTURE);
 			}  
