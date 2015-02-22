@@ -140,19 +140,18 @@ public class ProcessImage extends ActionBarActivity {
 		
 	/** Called after OpenCV is initialized. Processes the chosen image if it is 
 	 *  a valid image */	
-	private void showImageAndPlot() { 
-		//TODO 
-		// path 
+	private void showImageAndPlot() {  
+		// mPathMoved --> path of the file 
 		Log.e(TAG, "path: " + mPathMoved);
 		
-		String location = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/";
+		String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/";
 		 
 		boolean okay = true;
 		
 		
 		
 		// Java native function - processes the image 
-		String output_path = findCirclesNative(location, this.mFileName);  // TODO - should modify okay variable 
+		String output_path = findCirclesNative(mPathMoved, this.mFileName);  // TODO - should modify okay variable 
 		 
 		
 		if(okay) {
@@ -174,7 +173,7 @@ public class ProcessImage extends ActionBarActivity {
 			myWebView.getSettings().setUseWideViewPort(true);
 			myWebView.getSettings().setLoadWithOverviewMode(true);
 			
-			plotData(); // should take a string - path of the file 
+		//	plotData(); // should take a string - path of the file 
 			
 		} else {  
 		 // Show error message;
