@@ -82,6 +82,8 @@ public class ProcessImage extends ActionBarActivity {
 	 
 	private String mFileName;
 	
+	private String mPathMoved;
+	
 	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +101,7 @@ public class ProcessImage extends ActionBarActivity {
 		mFileName = src.getName(); 
 		
 		File dest = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/Original_Images/" + src.getName());
-		 
+		
 		FileChannel source = null;
         FileChannel destination = null;
         try {
@@ -119,6 +121,8 @@ public class ProcessImage extends ActionBarActivity {
 		} catch (IOException e) { 
 			e.printStackTrace();
 		} 
+        
+        mPathMoved = dest.getAbsolutePath();
 	}
 	 
 	private void storeImage(Bitmap image, String path) {
@@ -137,6 +141,10 @@ public class ProcessImage extends ActionBarActivity {
 	/** Called after OpenCV is initialized. Processes the chosen image if it is 
 	 *  a valid image */	
 	private void showImageAndPlot() { 
+		//TODO 
+		// path 
+		Log.e(TAG, "path: " + mPathMoved);
+		
 		String location = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/";
 		 
 		boolean okay = true;
