@@ -11,8 +11,4 @@ LOCAL_MODULE    := process_image
 LOCAL_SRC_FILES := find_fiducials.cpp
 LOCAL_LDLIBS +=  -llog -ldl
 
-all:
-	@echo $(LOCAL_PATH)
-
-
 include $(BUILD_SHARED_LIBRARY)

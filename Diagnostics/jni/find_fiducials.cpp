@@ -38,7 +38,7 @@ extern "C" {
 		 // Original read in image, since flag (1) is > 0 return a 3-channel color image.
 		Mat original_image = imread(name, 1);
 	//	flip(original_image, original_image, 1);
-/*
+
 		// Grayscale image
 		Mat image = imread(nativeString, 0);
 		Mat src = image;
@@ -261,7 +261,7 @@ extern "C" {
         __android_log_print(ANDROID_LOG_INFO, "AVERAGE VALUES", "WHITE BLACK %f %f", valDark, valWhite);
 
         outputFile.close();
-*/
+
         // Save images
 	//	imwrite("/storage/emulated/0/Output/one.jpg", green_channel);
 	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
