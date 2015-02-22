@@ -225,8 +225,8 @@ extern "C" {
         original_image.copyTo(copyTwo);
 
         // horizontal
-		rectangle( original_image, Point( 400, 150 ), Point( 450, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_image, Point( 650, 150 ), Point( 700, 220 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 500, 100 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 800, 100 ), Point( 950, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		// vertical
 		//rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
@@ -254,7 +254,7 @@ extern "C" {
         Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
         copyTwo = copyTwo(colorSecond);
 
-        __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v2", "Found locations of test strips.");
+        __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v4", "Found locations of test strips.");
 
         /*
 
