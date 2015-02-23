@@ -300,8 +300,6 @@ extern "C" {
     	   	Mat blue_channel_two = channel_two[2];
 
 
-        	double current = 0.0;
-
         	double red_one = 0.0;
         	double green_one = 0.0;
         	double blue_one = 0.0;
@@ -325,15 +323,25 @@ extern "C" {
         	}
 
         	red_one = red_one / (double) copyOne.cols;
-        	green_one = current / (double) copyOne.cols;
-        	blue_one = current / (double) copyOne.cols;
+        	green_one = green_one / (double) copyOne.cols;
+        	blue_one = blue_one / (double) copyOne.cols;
 
         	red_two = red_two / (double) copyOne.cols;
         	green_two = green_two / (double) copyOne.cols;
         	blue_two = blue_two / (double) copyOne.cols;
 
         	//current = (current - valDark) / (valWhite - valDark);
-    		outputFile << current;
+    		outputFile << red_one;
+    		outputFile << "\t";
+    		outputFile << red_one;
+    		outputFile << "\t";
+    		outputFile << blue_one;
+    		outputFile << "\t";
+    		outputFile << red_two;
+    		outputFile << "\t";
+    		outputFile << green_two;
+    		outputFile << "\t";
+    		outputFile << blue_two;
     		outputFile << "\n";
         }
 
