@@ -17,6 +17,7 @@
 #include <iostream>
 #include <vector>
 
+// Note the image is being rotated 360 degrees - not 90 at the moment
 using namespace std;
 using namespace cv;
 
@@ -29,7 +30,6 @@ extern "C" {
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
-
 		// Folder for original images
 		std::ostringstream oss;
 		oss << nativeString << "Original_Images/" << nativeName;
@@ -40,7 +40,7 @@ extern "C" {
 
 		// Rotate image - 90 degrees
 		transpose(original_image, original_image);
-	    flip(original_image, original_image, 1);
+	    flip(original_image, original_image, -1);
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
 
@@ -55,7 +55,6 @@ extern "C" {
 	    split(image, channel);
 	    // Green channel of image
 	   	Mat green_channel = channel[1];
-
 
 		// Height and width of the original picture
 		int rows = green_channel.rows;
@@ -212,8 +211,7 @@ extern "C" {
         Point maxPoint = averages.at(indexMax);
 
         // Problem here TODO
-        original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, minPoint.x + 1100, minPoint.y + 250));
-
+        original_image = original_image(Rect(minPoint.x - 20, minPoint.y - 20, minPoint.x + 1100, minPoint.y + 250));
 
         Mat stdDark;
         original_image.copyTo(stdDark);
@@ -228,8 +226,8 @@ extern "C" {
         original_image.copyTo(copyTwo);
 
         // horizontal
-		rectangle( original_image, Point( 500, 450 ), Point( 600, 550 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_image, Point( 900, 450 ), Point( 1000, 550 ), Scalar( 0, 55, 255 ), 3, 4 );
+	//	rectangle( original_image, Point( 500, 150 ), Point( 600, 200 ), Scalar( 0, 55, 255 ), 3, 4 );
+		//rectangle( original_image, Point( 900, 150 ), Point( 1000, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Setting locations of rectangles");
 
@@ -252,14 +250,14 @@ extern "C" {
 		//stdWhite = stdWhite(whiteStd);
 
 		// first test strip
-		Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
-		copyOne = copyOne(colorFirst);
+//		Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
+	//	copyOne = copyOne(colorFirst);
 
 		// second test strip
-        Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
-        copyTwo = copyTwo(colorSecond);
+ //       Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
+   //     copyTwo = copyTwo(colorSecond);
 
-        __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v6", "Found locations of test strips.");
+        __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
 
         /*
 
@@ -293,15 +291,20 @@ extern "C" {
 
         outputFile.close(); */
 
-        // Save images
-	//	imwrite("/storage/emulated/0/Output/one.jpg", green_channel);
-	//	imwrite("/storage/emulated/0/Output/two.jpg", canny_output);
-	//	imwrite("/storage/emulated/0/Output/three.jpg", croppedBlurred);
-	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
-	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
-		imwrite("/storage/sdcard0/Diagnostics_Images/Processed_Images/temp.jpg", image); // TODO
-	//	__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "done!");
+		const char *nativeString_2 = env->GetStringUTFChars(imagePath, 0);
+		const char *nativeName_2 = env->GetStringUTFChars(fileName, 0);
+
+		// Folder for processed images
+		std::ostringstream oss_second;
+		oss << nativeString_2 << "ProcessedImages/" << nativeName_2;
+		std::string name_second = oss.str();
+
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "%s", name_second.c_str());
+        // Save images
+		imwrite(name_second, original_image); // TODO
+
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done!");
 		return imagePath;
 	 }
 }
