@@ -68,20 +68,23 @@ extern "C" {
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Looked at green channel.");
 
-		// Cropping the image slightly 								TODO: Might have to update these
+		// Cropping the image slightly
+		// TODO: Might have to update these
 		int originalX = cols / 8;
 		int originalY = rows * 3 / 8;
 		int width = cols * 7 / 8 - originalX;
 		int height = rows * 3 / 4 - rows * 2 / 8;
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Cropped image.");
+
 		// Roughly cropping the image
 		Mat croppedImage = green_channel(Rect(originalX, originalY, width, height));
         Mat croppedBlurred;
 
+        // Crop image
 		original_image = original_image(Rect(originalX, originalY, width, height));
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Cropped original image.");
 
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Cropped original image.");
 
 		// Blur the image
 	    //GaussianBlur(croppedImage, croppedBlurred, Size(1, 1), 10.0);
@@ -91,12 +94,12 @@ extern "C" {
 
 		// Additional threshold
 		//croppedImage = croppedImage > 100;
+
 		// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
 				threshold(croppedImage, croppedBlurred, // input and output
 				  50,							  // treshold value
 				  255,							  // max binary value
 				  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
-
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Checking above threshold value.");
 
@@ -109,6 +112,7 @@ extern "C" {
 		dilate(croppedBlurred, croppedBlurred, element);
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Finding fiducials.");
+
 		// Finding contours
 		// Thresholds
 		int thresh = 50;
@@ -116,6 +120,7 @@ extern "C" {
 		RNG rng(12345);
 		double area;
 
+		// Create arrays to store found fiducials in
 		Mat canny_output;
     	vector<vector<Point> > contours;
 		vector<Vec4i> hierarchy;
@@ -132,12 +137,13 @@ extern "C" {
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Drawing contours");
 
+		// Array of found contours
 		vector<vector<Point> > foundContours;
-
 		for (int j = 0; j < contours.size(); j++) {
 			area = contourArea(contours[j]);
 			approxPolyDP(contours[j], approx, 5, true);
-			if (area > 300 && area < 1500) {									// TODO
+			// TODO: Could be changed
+			if (area > 300 && area < 1500) {
 				__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v5", "%f",  area);
 				Scalar color = Scalar(222, 20, 20);
                 foundContours.push_back(contours[j]);
@@ -151,6 +157,8 @@ extern "C" {
 	    }
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Averaging contours");
+
+		// Average many points to find the center of the circle
         vector<Point> averages;
 
 		for (int j = 0; j < foundContours.size(); j++) {
@@ -169,11 +177,11 @@ extern "C" {
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Checking lengths.");
 
+		// Figure out which fiducials we want to keep : we want the min and max sums
 		int minSum = 10000;
 		int maxSum = 0;
 		int indexMin = 0;
 		int indexMax = 0;
-
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Starting min/max index checks.");
 
@@ -184,22 +192,21 @@ extern "C" {
         	   minSum = sum;
         	   indexMin = p;
 
-	//			__android_log_print(ANDROID_LOG_ERROR, "min index", "current x and y - %d and %d",  current.x, current.y);
+        	   //__android_log_print(ANDROID_LOG_ERROR, "min index", "current x and y - %d and %d",  current.x, current.y);
            }
            if(sum >= maxSum) {
         	   maxSum = sum;
         	   indexMax = p;
-      //  	   __android_log_print(ANDROID_LOG_ERROR, "max index", "current x and y - %d and %d",  current.x, current.y);
+        	   //__android_log_print(ANDROID_LOG_ERROR, "max index", "current x and y - %d and %d",  current.x, current.y);
            }
         }
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v2", "Finished min/max index checks.");
-        // Point at the upper left
-        Point minPoint = averages.at(indexMin);
-        // Point at the lower right
-        Point maxPoint = averages.at(indexMax);
 
-        // Return an error message if bad TODO
+        Point minPoint = averages.at(indexMin);  	// Point at the upper left
+        Point maxPoint = averages.at(indexMax);		 // Point at the lower right
+
+        // Return an error message if bad: TODO
         original_image = original_image(Rect(minPoint.x - 20, minPoint.y - 20, minPoint.x + 1100, minPoint.y + 250));
 
         Mat stdDark;
@@ -247,14 +254,14 @@ extern "C" {
 
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
 
-
-
+        // Create string for output text file
 		std::ostringstream oss_third;
 		oss_third << nativeString << "Processed_Data/" << nameWOExt << ".txt";
 		std::string name_third = oss_third.str();
 
 		 __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "%s ",  name_third.c_str());
 
+		// Dark and light color standards
         Scalar avgDark = cv::mean(stdDark);
         Scalar avgWhite = cv::mean(stdWhite);
 
