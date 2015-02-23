@@ -30,6 +30,8 @@ extern "C" {
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
+		const char *nameWOExt = env->GetStringUTFChars(nameWOExtension, 0);
+
 		// Folder for original images
 		std::ostringstream oss;
 		oss << nativeString << "Original_Images/" << nativeName;
@@ -42,17 +44,21 @@ extern "C" {
 		transpose(original_image, original_image);
 	    flip(original_image, original_image, -1);
 
+	    //
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
 
 		// Grayscale image
 		Mat image = imread(name, 1);
+
+		// Rotate image - 90 degrees
 		transpose(image, image);
 		flip(image, image, -1);
 
+		// Split into three different
 		Mat src = image;
-
 		Mat channel[3];
 	    split(image, channel);
+
 	    // Green channel of image
 	   	Mat green_channel = channel[1];
 
@@ -162,24 +168,7 @@ extern "C" {
 		}
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Checking lengths.");
-/*
-		// At the moment, this doesn't do anything
-		// It's purpose is to find spots that are the best fit - by looking at the
-		// area created by the four points.
-		vector<vector<Point> > betterFits;
-        for(int m = 0; m < averages.size() - 1; m++) {
-        	for(int n = 0; n < averages.size(); n++) {
-        		if (m != n) {
-        		   Point one = averages.at(m);
-        		   Point two = averages.at(n);
 
-         		   double length = abs((double) (one.x - two.x));
-                   double width = abs((double) (one.y - two.y));
-                   std::vector<Point> v(2);
-        		}
-        	}
-        }
-*/
 		int minSum = 10000;
 		int maxSum = 0;
 		int indexMin = 0;
@@ -195,12 +184,12 @@ extern "C" {
         	   minSum = sum;
         	   indexMin = p;
 
-				__android_log_print(ANDROID_LOG_ERROR, "min index", "current x and y - %d and %d",  current.x, current.y);
+	//			__android_log_print(ANDROID_LOG_ERROR, "min index", "current x and y - %d and %d",  current.x, current.y);
            }
            if(sum >= maxSum) {
         	   maxSum = sum;
         	   indexMax = p;
-        	   __android_log_print(ANDROID_LOG_ERROR, "max index", "current x and y - %d and %d",  current.x, current.y);
+      //  	   __android_log_print(ANDROID_LOG_ERROR, "max index", "current x and y - %d and %d",  current.x, current.y);
            }
         }
 
@@ -210,7 +199,7 @@ extern "C" {
         // Point at the lower right
         Point maxPoint = averages.at(indexMax);
 
-        // Problem here TODO
+        // Return an error message if bad TODO
         original_image = original_image(Rect(minPoint.x - 20, minPoint.y - 20, minPoint.x + 1100, minPoint.y + 250));
 
         Mat stdDark;
@@ -259,8 +248,9 @@ extern "C" {
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
 
 
+
 		std::ostringstream oss_third;
-		oss_third << nativeString << "Processed_Data/" << nameWOExtension << ".txt";
+		oss_third << nativeString << "Processed_Data/" << nameWOExt << ".txt";
 		std::string name_third = oss_third.str();
 
 		 __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "%s ",  name_third.c_str());
@@ -273,7 +263,7 @@ extern "C" {
         double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right TODO
 
         ofstream outputFile;
-        outputFile.open (name_third); // TODO
+        outputFile.open (name_third.c_str()); // TODO
 
         // copyOne & copyTwo
         for(int r = 0; r < copyOne.rows; r++) {
@@ -286,7 +276,7 @@ extern "C" {
         	current = current / (double) copyOne.cols;
     	//	__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "avg %d", current);
         	current = (current - valDark) / (valWhite - valDark);
-    		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "VALUE OF INT %f", current);
+    //		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "VALUE OF INT %f", current);
     		outputFile << current;
     		outputFile << "\n";
         }
