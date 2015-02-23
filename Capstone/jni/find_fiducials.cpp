@@ -263,6 +263,8 @@ extern "C" {
 		oss_third << nativeString << "Processed_Data/" << nameWOExtension << ".txt";
 		std::string name_third = oss_third.str();
 
+		name_third
+		 __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "%s ",  name_third);
 
         Scalar avgDark = cv::mean(stdDark);
         Scalar avgWhite = cv::mean(stdWhite);
@@ -272,7 +274,7 @@ extern "C" {
         double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right
 
         ofstream outputFile;
-        outputFile.open ("/storage/emulated/0/Diagnostics_Images/ProcessedData/output.txt"); // TODO
+        outputFile.open (name_third); // TODO
 
         // copyOne & copyTwo
         for(int r = 0; r < copyOne.rows; r++) {
@@ -307,7 +309,7 @@ extern "C" {
         // Save images
 		imwrite(name_second, original_image); // TODO
 
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done!");
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done - 1!");
 		return imagePath;
 	 }
 }
