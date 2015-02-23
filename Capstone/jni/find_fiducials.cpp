@@ -262,33 +262,54 @@ extern "C" {
 		 __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "%s ",  name_third.c_str());
 
 		// Dark and light color standards
-        Scalar avgDark = cv::mean(stdDark);
-        Scalar avgWhite = cv::mean(stdWhite);
+        //Scalar avgDark = cv::mean(stdDark);
+        //Scalar avgWhite = cv::mean(stdWhite);
 
         // we can to look @ red color channel - not sure if this is acheiving what we want
-        double valDark = avgDark.val[0];
-        double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right TODO
+        //double valDark = avgDark.val[0];
+        //double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right TODO
 
+		// Save to a .txt file
         ofstream outputFile;
-        outputFile.open (name_third.c_str()); // TODO
+        outputFile.open (name_third.c_str());
 
-        // copyOne & copyTwo
+        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyOne.rows);
+        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyTwo.rows);
+
+        // First test strip:  copyOne
+        // Second test strip: copyTwo
         for(int r = 0; r < copyOne.rows; r++) {
+
+        	Mat channel_one[3];
+    	    split(copyOne, channel_one);
+
+    	    // Color channels of first test strip
+    	   	Mat red_channel_one = channel_one[0];
+    	   	Mat green_channel_one = channel_one[1];
+    	   	Mat blue_channel_one = channel_one[2];
+
+    	   	Mat channel_two[3];
+    	   	split(copyTwo, channel_two);
+
+    	    // Color channels of second test strip
+    	   	Mat red_channel_two = channel_two[0];
+    	   	Mat green_channel_two = channel_two[1];
+    	   	Mat blue_channel_two = channel_two[2];
+
+
         	double current = 0.0;
         	for(int s = 0; s < copyOne.cols; s++) {
         		Vec3b tempColor = copyOne.at<Vec3b>(Point(s,r));
-        		//__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "avg %d", tempColor[0]);
         		current += tempColor[0];
         	}
+
         	current = current / (double) copyOne.cols;
-    	//	__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "avg %d", current);
-        	current = (current - valDark) / (valWhite - valDark);
-    //		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "VALUE OF INT %f", current);
+        	//current = (current - valDark) / (valWhite - valDark);
     		outputFile << current;
     		outputFile << "\n";
         }
 
-        __android_log_print(ANDROID_LOG_ERROR, "C++ Code", "WHITE BLACK %f %f", valDark, valWhite);
+        //__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "WHITE BLACK %f %f", valDark, valWhite);
 
         outputFile.close();
 
