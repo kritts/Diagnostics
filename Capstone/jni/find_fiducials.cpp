@@ -298,7 +298,7 @@ extern "C" {
 		// Folder for processed images
 		std::ostringstream oss_second;
 		oss << nativeString_2 << "ProcessedImages/" << nativeName_2;
-		std::string name_second = oss.str();
+		std::string name_second = oss_second.str();
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "%s", name_second.c_str());
         // Save images
