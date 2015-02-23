@@ -263,15 +263,14 @@ extern "C" {
 		oss_third << nativeString << "Processed_Data/" << nameWOExtension << ".txt";
 		std::string name_third = oss_third.str();
 
-		name_third
-		 __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "%s ",  name_third);
+		 __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "%s ",  name_third.c_str());
 
         Scalar avgDark = cv::mean(stdDark);
         Scalar avgWhite = cv::mean(stdWhite);
 
         // we can to look @ red color channel - not sure if this is acheiving what we want
         double valDark = avgDark.val[0];
-        double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right
+        double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right TODO
 
         ofstream outputFile;
         outputFile.open (name_third); // TODO
