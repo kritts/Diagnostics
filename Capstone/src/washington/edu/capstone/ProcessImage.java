@@ -151,7 +151,7 @@ public class ProcessImage extends ActionBarActivity {
 		
 		
 		// Java native function - processes the image 
-		String output_path = findCirclesNative(mPathMoved, this.mFileName);  // TODO - should modify okay variable 
+		String output_path = findCirclesNative(folder, this.mFileName);  // TODO - should modify okay variable 
 		 
 		
 		if(okay) {
