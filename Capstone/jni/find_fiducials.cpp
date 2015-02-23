@@ -226,7 +226,7 @@ extern "C" {
         original_image.copyTo(copyTwo);
 
         // horizontal
-	 	rectangle( original_image, Point( 500, 150 ), Point( 600, 200 ), Scalar( 0, 55, 255 ), 3, 4 );
+	 	rectangle( original_image, Point( 550, 150 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 		rectangle( original_image, Point( 900, 150 ), Point( 1000, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Setting locations of rectangles");
