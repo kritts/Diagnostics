@@ -226,8 +226,8 @@ extern "C" {
         original_image.copyTo(copyTwo);
 
         // horizontal
-	//	rectangle( original_image, Point( 500, 150 ), Point( 600, 200 ), Scalar( 0, 55, 255 ), 3, 4 );
-		//rectangle( original_image, Point( 900, 150 ), Point( 1000, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
+	 	rectangle( original_image, Point( 500, 150 ), Point( 600, 200 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 900, 150 ), Point( 1000, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Setting locations of rectangles");
 
@@ -250,12 +250,12 @@ extern "C" {
 		//stdWhite = stdWhite(whiteStd);
 
 		// first test strip
-//		Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
-	//	copyOne = copyOne(colorFirst);
+ 		Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
+	 	copyOne = copyOne(colorFirst);
 
 		// second test strip
- //       Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
-   //     copyTwo = copyTwo(colorSecond);
+        Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
+         copyTwo = copyTwo(colorSecond);
 
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
 
@@ -297,7 +297,7 @@ extern "C" {
 
 		// Folder for processed images
 		std::ostringstream oss_second;
-		oss << nativeString_2 << "ProcessedImages/" << nativeName_2;
+		oss_second << nativeString_2 << "Processed_Images/" << nativeName_2;
 		std::string name_second = oss_second.str();
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "%s", name_second.c_str());
