@@ -276,6 +276,9 @@ extern "C" {
         __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyOne.rows);
         __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyTwo.rows);
 
+        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyOne.cols);
+        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyOne.cols);
+
         // First test strip:  copyOne
         // Second test strip: copyTwo
         for(int r = 0; r < copyOne.rows; r++) {
@@ -298,12 +301,37 @@ extern "C" {
 
 
         	double current = 0.0;
+
+        	double red_one = 0.0;
+        	double green_one = 0.0;
+        	double blue_one = 0.0;
+        	double red_two = 0.0;
+        	double green_two = 0.0;
+        	double blue_two = 0.0;
         	for(int s = 0; s < copyOne.cols; s++) {
-        		Vec3b tempColor = copyOne.at<Vec3b>(Point(s,r));
-        		current += tempColor[0];
+        		Vec3b red_1 = copyOne.at<Vec3b>(Point(s,r));
+        		Vec3b green_1 = copyOne.at<Vec3b>(Point(s,r));
+        		Vec3b blue_1 = copyOne.at<Vec3b>(Point(s,r));
+        		Vec3b red_2 = copyTwo.at<Vec3b>(Point(s,r));
+        		Vec3b green_2 = copyTwo.at<Vec3b>(Point(s,r));
+        		Vec3b blue_2 = copyTwo.at<Vec3b>(Point(s,r));
+
+        		red_one += red_1[0];
+        		green_one += green_1[0];
+        		blue_one += blue_1[0];
+        		red_two += red_2[0];
+        		green_two += green_2[0];
+        		blue_two += blue_2[0];
         	}
 
-        	current = current / (double) copyOne.cols;
+        	red_one = red_one / (double) copyOne.cols;
+        	green_one = current / (double) copyOne.cols;
+        	blue_one = current / (double) copyOne.cols;
+
+        	red_two = red_two / (double) copyOne.cols;
+        	green_two = green_two / (double) copyOne.cols;
+        	blue_two = blue_two / (double) copyOne.cols;
+
         	//current = (current - valDark) / (valWhite - valDark);
     		outputFile << current;
     		outputFile << "\n";
