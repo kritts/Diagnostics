@@ -39,7 +39,7 @@ extern "C" {
 		Mat original_image = imread(nativeString, 1);
 
 		transpose(original_image, original_image);
-	    flip(original_image, original_image, -1);
+	    flip(original_image, original_image, 1);
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
 
 		// Grayscale image
@@ -209,7 +209,7 @@ extern "C" {
         Point maxPoint = averages.at(indexMax);
 
         // Problem here TODO
-        original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, minPoint.x + 900, minPoint.y + 250));
+        original_image = original_image(Rect(minPoint.x - 10, minPoint.y - 10, minPoint.x + 1100, minPoint.y + 250));
 
 
         Mat stdDark;
@@ -225,8 +225,10 @@ extern "C" {
         original_image.copyTo(copyTwo);
 
         // horizontal
-		rectangle( original_image, Point( 500, 100 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_image, Point( 800, 100 ), Point( 950, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 500, 450 ), Point( 600, 550 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 900, 450 ), Point( 1000, 550 ), Scalar( 0, 55, 255 ), 3, 4 );
+
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Setting locations of rectangles");
 
 		// vertical
 		//rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
@@ -254,7 +256,7 @@ extern "C" {
         Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
         copyTwo = copyTwo(colorSecond);
 
-        __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v4", "Found locations of test strips.");
+        __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v6", "Found locations of test strips.");
 
         /*
 
@@ -295,7 +297,7 @@ extern "C" {
 	//	imwrite("/storage/emulated/0/Output/four.jpg", drawing);
 
 	//	imwrite(imagePath + "/ProcessedImages/" + fileName, original_image); // TODO
-		imwrite("/storage/sdcard0/Diagnostics_Images/Processed_Images/temp.jpg", original_image); // TODO
+		imwrite("/storage/sdcard0/Diagnostics_Images/Processed_Images/temp.jpg", image); // TODO
 	//	__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "done!");
 		return imagePath;
 	 }
