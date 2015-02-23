@@ -78,7 +78,7 @@ public class ProcessImage extends ActionBarActivity {
 	private int resultCode;
 	
 	/** C++ code to process image */
-	public native String findCirclesNative(String imagePath, String fileName);
+	public native String findCirclesNative(String imagePath, String fileName, String nameWOExtension);
 	 
 	private String mFileName;
 	
@@ -151,7 +151,8 @@ public class ProcessImage extends ActionBarActivity {
 		
 		
 		// Java native function - processes the image 
-		String output_path = findCirclesNative(folder, this.mFileName);  // TODO - should modify okay variable 
+		Log.e(TAG + "!", mFileName.substring(0, mFileName.lastIndexOf('.')));
+		String output_path = findCirclesNative(folder, mFileName, mFileName.substring(0, mFileName.lastIndexOf('.')));    
 		 
 		
 		if(okay) {

@@ -22,9 +22,9 @@ using namespace std;
 using namespace cv;
 
 extern "C" {
-	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName);
+	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName, jstring nameWOExtension);
 
-	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName)
+	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName, jstring nameWOExtension)
 	{
 
 		// Get string in a format that we can use it
@@ -226,8 +226,8 @@ extern "C" {
         original_image.copyTo(copyTwo);
 
         // horizontal
-	 	rectangle( original_image, Point( 550, 150 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_image, Point( 900, 150 ), Point( 1000, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
+	 	rectangle( original_image, Point( 550, 100 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
+		rectangle( original_image, Point( 900, 100 ), Point( 1000, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Setting locations of rectangles");
 
@@ -239,7 +239,6 @@ extern "C" {
 		//rectangle( original_image, Point( 190, 50 ), Point( 200, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
 		// color standard, white
 		//rectangle( original_image, Point( 120, 50 ), Point( 130, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
-
 
 		// dark color standard
 		//Rect darkStd(Point(190, 50), Point(200, 60));
@@ -259,7 +258,11 @@ extern "C" {
 
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
 
-        /*
+
+		std::ostringstream oss_third;
+		oss_third << nativeString << "Processed_Data/" << nameWOExtension << ".txt";
+		std::string name_third = oss_third.str();
+
 
         Scalar avgDark = cv::mean(stdDark);
         Scalar avgWhite = cv::mean(stdWhite);
@@ -289,7 +292,7 @@ extern "C" {
 
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code", "WHITE BLACK %f %f", valDark, valWhite);
 
-        outputFile.close(); */
+        outputFile.close();
 
 
 		const char *nativeString_2 = env->GetStringUTFChars(imagePath, 0);
