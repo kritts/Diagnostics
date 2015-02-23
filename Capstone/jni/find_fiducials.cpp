@@ -30,25 +30,22 @@ extern "C" {
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
 
-		//imagePath,  fileName
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "%u", nativeString);
-
+		// Folder for original images
 		std::ostringstream oss;
 		oss << nativeString << "Original_Images/" << nativeName;
 		std::string name = oss.str();
 
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "%s", name.c_str());
-
-
 		 // Original read in image, since flag (1) is > 0 return a 3-channel color image.
-		Mat original_image = imread(name.c_str(), 1);
+		Mat original_image = imread(name, 1);
 
+		// Rotate image - 90 degrees
 		transpose(original_image, original_image);
 	    flip(original_image, original_image, 1);
+
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
 
 		// Grayscale image
-		Mat image = imread(nativeString, 1);
+		Mat image = imread(name, 1);
 		transpose(image, image);
 		flip(image, image, -1);
 
@@ -56,7 +53,8 @@ extern "C" {
 
 		Mat channel[3];
 	    split(image, channel);
-	   	Mat green_channel = channel[1]; // Green channel of image
+	    // Green channel of image
+	   	Mat green_channel = channel[1];
 
 
 		// Height and width of the original picture
