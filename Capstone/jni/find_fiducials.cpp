@@ -27,6 +27,7 @@ extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName, jstring nameWOExtension)
 	{
 
+		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "1");
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
@@ -74,15 +75,6 @@ extern "C" {
 		original_image = original_image(Rect(originalX, originalY, width, height));
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Cropped original image.");
-
-		// Blur the image
-	    //GaussianBlur(croppedImage, croppedBlurred, Size(1, 1), 10.0);
-
-		// Increase contrast
-		//equalizeHist(croppedBlurred, croppedBlurred);
-
-		// Additional threshold
-		//croppedImage = croppedImage > 100;
 
 		// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
 				threshold(croppedImage, croppedBlurred, // input and output
@@ -202,11 +194,11 @@ extern "C" {
         int value_min_y = 0;
 
         if(minPoint.x - 20 > value_min_x) {
-        	value_min_x = minPoint.x - 20;
+        	value_min_x = minPoint.x - 50;
         }
 
         if(minPoint.y - 20 > value_min_y) {
-        	value_min_y = minPoint.y - 20;
+        	value_min_y = minPoint.y - 50;
         }
 
         if(1100 < value_x) {
@@ -238,9 +230,9 @@ extern "C" {
         original_image.copyTo(copyOne);
 
         // horizontal
-	 	rectangle( original_image, Point( 550, 100 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
+	 	rectangle( original_image, Point( 500, 100 ), Point( 600, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Setting locations of rectangles");
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v99", "Setting locations of rectangles");
 
 		// vertical
 		//rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
