@@ -27,7 +27,7 @@ extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName, jstring nameWOExtension)
 	{
 
-		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "1");
+		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "5");
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
@@ -77,7 +77,7 @@ extern "C" {
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Cropped original image.");
 
 		// Make the image "black and white" by examining pixels over a certain intensity only (high threshold)
-				threshold(croppedImage, croppedBlurred, // input and output
+		threshold(croppedImage, croppedBlurred, // input and output
 				  50,							  // treshold value
 				  255,							  // max binary value
 				  THRESH_BINARY | THRESH_OTSU);   // required flag to perform Otsu thresholding
@@ -123,7 +123,7 @@ extern "C" {
 		for (int j = 0; j < contours.size(); j++) {
 			area = contourArea(contours[j]);
 			approxPolyDP(contours[j], approx, 5, true);
-			// TODO: Could be changed
+			// TODO: Should be changed
 			if (area > 300 && area < 1500) {
 				__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v5", "%f",  area);
 				Scalar color = Scalar(222, 20, 20);
@@ -133,7 +133,7 @@ extern "C" {
 				vector<Point>::iterator vertex;
 				for (vertex = approx.begin(); vertex != approx.end(); ++vertex) {
 					circle(original_image, *vertex, 3, Scalar(222, 20, 20), 1);
-					}
+				}
 			}
 	    }
 
@@ -153,7 +153,6 @@ extern "C" {
 			}
 			Point current = Point(((float)sumX)/temp.size(), ((float)sumY)/temp.size());
             averages.push_back(current);
-
 		}
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Checking lengths.");
@@ -187,18 +186,17 @@ extern "C" {
         Point minPoint = averages.at(indexMin);  	// Point at the upper left
         Point maxPoint = averages.at(indexMax);		 // Point at the lower right
 
-
         int value_x = original_image.cols;
         int value_y = original_image.rows;
         int value_min_x = 0;
         int value_min_y = 0;
 
-        if(minPoint.x - 20 > value_min_x) {
+        if(minPoint.x - 50 > value_min_x) {
         	value_min_x = minPoint.x - 50;
         }
 
-        if(minPoint.y - 20 > value_min_y) {
-        	value_min_y = minPoint.y - 50;
+        if(minPoint.y - 150 > value_min_y) {
+        	value_min_y = minPoint.y - 150;
         }
 
         if(1100 < value_x) {
@@ -269,9 +267,9 @@ extern "C" {
         //Scalar avgDark = cv::mean(stdDark);
         //Scalar avgWhite = cv::mean(stdWhite);
 
-        // we can to look @ red color channel - not sure if this is acheiving what we want
+        // TODO: we can to look @ red color channel - not sure if this is acheiving what we want
         //double valDark = avgDark.val[0];
-        //double valWhite = avgWhite.val[1]; // is 0 red? // not sure if this is right TODO
+        //double valWhite = avgWhite.val[1]; // TODO: is 0 red?
 
 		// Save to a .txt file
         ofstream outputFile;
@@ -289,6 +287,8 @@ extern "C" {
     	   	Mat green_channel_one = channel_one[1];
     	   	Mat blue_channel_one = channel_one[2];
 
+    	   	// to do
+    	   	// print 0%, 33%, and 66%
 
         	double red_one = 0.0;
         	double green_one = 0.0;
