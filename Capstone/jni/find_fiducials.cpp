@@ -206,8 +206,19 @@ extern "C" {
         Point minPoint = averages.at(indexMin);  	// Point at the upper left
         Point maxPoint = averages.at(indexMax);		 // Point at the lower right
 
+
+        int value_x = original_image.cols;
+        int value_y = original_image.rows;
+        if(minPoint.x + 1100 < value_x) {
+        	value_x = minPoint.x + 1100;
+        }
+
+        if(minPoint.y + 250 < value_y) {
+        	value_y = minPoint.y + 250;
+        }
+
         // Return an error message if bad: TODO
-        original_image = original_image(Rect(minPoint.x - 20, minPoint.y - 20, minPoint.x + 1100, minPoint.y + 250));
+        original_image = original_image(Rect(minPoint.x - 20, minPoint.y - 20,value_x , value_y));
 
         Mat stdDark;
         original_image.copyTo(stdDark);
