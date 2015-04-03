@@ -315,11 +315,11 @@ extern "C" {
         		Vec3b blue_2 = copyTwo.at<Vec3b>(Point(s,r));
 
         		red_one += red_1[0];
-        		green_one += green_1[0];
-        		blue_one += blue_1[0];
+        		green_one += green_1[1];
+        		blue_one += blue_1[2];
         		red_two += red_2[0];
-        		green_two += green_2[0];
-        		blue_two += blue_2[0];
+        		green_two += green_2[1];
+        		blue_two += blue_2[2];
         	}
 
         	red_one = red_one / (double) copyOne.cols;
@@ -333,7 +333,7 @@ extern "C" {
         	//current = (current - valDark) / (valWhite - valDark);
     		outputFile << red_one;
     		outputFile << "\t";
-    		outputFile << red_one;
+    		outputFile << green_one;
     		outputFile << "\t";
     		outputFile << blue_one;
     		outputFile << "\t";
