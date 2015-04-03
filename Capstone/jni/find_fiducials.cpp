@@ -40,19 +40,8 @@ extern "C" {
 		 // Original read in image, since flag (1) is > 0 return a 3-channel color image.
 		Mat original_image = imread(name, 1);
 
-		// Rotate image - 90 degrees
-	//	transpose(original_image, original_image);
-	  //  flip(original_image, original_image, -1);
-
-	    //
-		//__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
-
 		// Grayscale image
 		Mat image = imread(name, 1);
-
-		// Rotate image - 90 degrees
-	//	transpose(image, image);
-		//flip(image, image, -1);
 
 		// Split into three different
 		Mat src = image;
