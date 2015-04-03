@@ -41,18 +41,18 @@ extern "C" {
 		Mat original_image = imread(name, 1);
 
 		// Rotate image - 90 degrees
-		transpose(original_image, original_image);
-	    flip(original_image, original_image, -1);
+	//	transpose(original_image, original_image);
+	  //  flip(original_image, original_image, -1);
 
 	    //
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
+		//__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Rotated Image.");
 
 		// Grayscale image
 		Mat image = imread(name, 1);
 
 		// Rotate image - 90 degrees
-		transpose(image, image);
-		flip(image, image, -1);
+	//	transpose(image, image);
+		//flip(image, image, -1);
 
 		// Split into three different
 		Mat src = image;
@@ -209,17 +209,36 @@ extern "C" {
 
         int value_x = original_image.cols;
         int value_y = original_image.rows;
-        if(minPoint.x + 1100 < value_x) {
-        	value_x = minPoint.x + 1100;
+        int value_min_x = 0;
+        int value_min_y = 0;
+
+        if(minPoint.x - 20 > value_min_x) {
+        	value_min_x = minPoint.x - 20;
         }
 
-        if(minPoint.y + 250 < value_y) {
-        	value_y = minPoint.y + 250;
+        if(minPoint.y - 20 > value_min_y) {
+        	value_min_y = minPoint.y - 20;
         }
+
+        if(1100 < value_x) {
+        	value_x = 500;
+        }
+
+        if(250 < value_y) {
+        	value_y = 250;
+        }
+        __android_log_print(ANDROID_LOG_ERROR, "x val min",  "%u",  value_min_x);
+        __android_log_print(ANDROID_LOG_ERROR, "y val min",  "%u",  value_min_y);
+        __android_log_print(ANDROID_LOG_ERROR, "x val max",  "%u",  value_x);
+        __android_log_print(ANDROID_LOG_ERROR, "y val max",  "%u",  value_y);
+
+        __android_log_print(ANDROID_LOG_ERROR, "x max",  "%u",  original_image.cols);
+        __android_log_print(ANDROID_LOG_ERROR, "y max",  "%u",  original_image.rows);
 
         // Return an error message if bad: TODO
-        original_image = original_image(Rect(minPoint.x - 20, minPoint.y - 20,value_x , value_y));
+        original_image = original_image(Rect(value_min_x, value_min_y, value_x , value_y));
 
+        __android_log_print(ANDROID_LOG_ERROR, "500", "500");
         Mat stdDark;
         original_image.copyTo(stdDark);
 
@@ -228,9 +247,6 @@ extern "C" {
 
         Mat copyOne;
         original_image.copyTo(copyOne);
-
-        Mat copyTwo;
-        original_image.copyTo(copyTwo);
 
         // horizontal
 	 	rectangle( original_image, Point( 550, 100 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
@@ -256,12 +272,9 @@ extern "C" {
 		//stdWhite = stdWhite(whiteStd);
 
 		// first test strip
- 		Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
-	 	copyOne = copyOne(colorFirst);
+ 		//Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
+	 	//copyOne = copyOne(colorFirst);
 
-		// second test strip
-        Rect colorSecond(Point( 650, 150 ), Point( 700, 220 ));
-         copyTwo = copyTwo(colorSecond);
 
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
 
@@ -284,12 +297,6 @@ extern "C" {
         ofstream outputFile;
         outputFile.open (name_third.c_str());
 
-        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyOne.rows);
-        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyTwo.rows);
-
-        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyOne.cols);
-        __android_log_print(ANDROID_LOG_ERROR, "ROWS", "%d ", copyOne.cols);
-
         // First test strip:  copyOne
         // Second test strip: copyTwo
         for(int r = 0; r < copyOne.rows; r++) {
@@ -302,14 +309,6 @@ extern "C" {
     	   	Mat green_channel_one = channel_one[1];
     	   	Mat blue_channel_one = channel_one[2];
 
-    	   	Mat channel_two[3];
-    	   	split(copyTwo, channel_two);
-
-    	    // Color channels of second test strip
-    	   	Mat red_channel_two = channel_two[0];
-    	   	Mat green_channel_two = channel_two[1];
-    	   	Mat blue_channel_two = channel_two[2];
-
 
         	double red_one = 0.0;
         	double green_one = 0.0;
@@ -321,25 +320,15 @@ extern "C" {
         		Vec3b red_1 = copyOne.at<Vec3b>(Point(s,r));
         		Vec3b green_1 = copyOne.at<Vec3b>(Point(s,r));
         		Vec3b blue_1 = copyOne.at<Vec3b>(Point(s,r));
-        		Vec3b red_2 = copyTwo.at<Vec3b>(Point(s,r));
-        		Vec3b green_2 = copyTwo.at<Vec3b>(Point(s,r));
-        		Vec3b blue_2 = copyTwo.at<Vec3b>(Point(s,r));
 
         		red_one += red_1[0];
         		green_one += green_1[1];
         		blue_one += blue_1[2];
-        		red_two += red_2[0];
-        		green_two += green_2[1];
-        		blue_two += blue_2[2];
         	}
 
         	red_one = red_one / (double) copyOne.cols;
         	green_one = green_one / (double) copyOne.cols;
         	blue_one = blue_one / (double) copyOne.cols;
-
-        	red_two = red_two / (double) copyOne.cols;
-        	green_two = green_two / (double) copyOne.cols;
-        	blue_two = blue_two / (double) copyOne.cols;
 
         	//current = (current - valDark) / (valWhite - valDark);
     		outputFile << red_one;
@@ -347,16 +336,8 @@ extern "C" {
     		outputFile << green_one;
     		outputFile << "\t";
     		outputFile << blue_one;
-    		outputFile << "\t";
-    		outputFile << red_two;
-    		outputFile << "\t";
-    		outputFile << green_two;
-    		outputFile << "\t";
-    		outputFile << blue_two;
     		outputFile << "\n";
         }
-
-        //__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "WHITE BLACK %f %f", valDark, valWhite);
 
         outputFile.close();
 
