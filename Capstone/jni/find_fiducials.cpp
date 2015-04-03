@@ -221,11 +221,11 @@ extern "C" {
         }
 
         if(1100 < value_x) {
-        	value_x = 500;
+        	value_x = original_image.cols - value_min_x;
         }
 
         if(250 < value_y) {
-        	value_y = 250;
+        	value_y = original_image.rows - value_min_y;
         }
         __android_log_print(ANDROID_LOG_ERROR, "x val min",  "%u",  value_min_x);
         __android_log_print(ANDROID_LOG_ERROR, "y val min",  "%u",  value_min_y);
@@ -250,7 +250,6 @@ extern "C" {
 
         // horizontal
 	 	rectangle( original_image, Point( 550, 100 ), Point( 650, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
-		rectangle( original_image, Point( 900, 100 ), Point( 1000, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Setting locations of rectangles");
 
