@@ -27,7 +27,7 @@ extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName, jstring nameWOExtension)
 	{
 
-		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "5");
+		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "9");
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
@@ -228,7 +228,7 @@ extern "C" {
         original_image.copyTo(copyOne);
 
         // horizontal
-	 	rectangle( original_image, Point( 500, 100 ), Point( 600, 250 ), Scalar( 0, 55, 255 ), 3, 4 );
+	 	rectangle( original_image, Point( 500, 100 ), Point( 600, 450 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v99", "Setting locations of rectangles");
 
@@ -237,17 +237,17 @@ extern "C" {
 		//rectangle( original_image, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 		// color standard, dark
-		//rectangle( original_image, Point( 190, 50 ), Point( 200, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
+		rectangle( original_image, Point( 270, 50 ), Point( 280, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
 		// color standard, white
-		//rectangle( original_image, Point( 120, 50 ), Point( 130, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
+		rectangle( original_image, Point( 80, 50 ), Point( 90, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 		// dark color standard
-		//Rect darkStd(Point(190, 50), Point(200, 60));
-		//stdDark = stdDark(darkStd);
+		Rect darkStd(Point(270, 50), Point(280, 60));
+		stdDark = stdDark(darkStd);
 
 		// white color standard
-		//Rect whiteStd(Point( 120, 50 ), Point( 130, 60 ));
-		//stdWhite = stdWhite(whiteStd);
+		Rect whiteStd(Point( 80, 50 ), Point( 90, 60 ));
+		stdWhite = stdWhite(whiteStd);
 
 		// first test strip
  		//Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
@@ -274,6 +274,38 @@ extern "C" {
 		// Save to a .txt file
         ofstream outputFile;
         outputFile.open (name_third.c_str());
+
+
+        for(int r = 0; r < stdDark.rows; r++) {
+        	Mat color_std_dark[3];
+        	split(stdDark, color_std_dark);
+        	 // Color channels of first test strip
+        	 Mat red_std_d = color_std_dark[0];
+        	 Mat green_std_d= color_std_dark[1];
+        	 Mat blue_std_d = color_std_dark[2];
+
+        	 Mat color_std_light[3];
+        	 split(stdWhite, color_std_light);
+        	 Mat red_std_l = color_std_light[0];
+        	 Mat green_std_l= color_std_light[1];
+             Mat blue_std_l = color_std_light[2];
+
+             outputFile << red_std_d;
+             outputFile << "\t";
+             outputFile << green_std_d;
+             outputFile << "\t";
+             outputFile << blue_std_d;
+             outputFile << "\t";
+             outputFile << red_std_l;
+             outputFile << "\t";
+             outputFile << green_std_l;
+             outputFile << "\t";
+             outputFile << blue_std_l;
+             outputFile << "\n";
+
+        }
+
+
 
         // First test strip:  copyOne
         // Second test strip: copyTwo
