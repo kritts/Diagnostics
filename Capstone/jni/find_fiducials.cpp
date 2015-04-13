@@ -279,16 +279,16 @@ extern "C" {
         for(int r = 0; r < stdDark.rows; r++) {
         	Mat color_std_dark[3];
         	split(stdDark, color_std_dark);
-        	 // Color channels of first test strip
-        	 Mat red_std_d = color_std_dark[0];
-        	 Mat green_std_d= color_std_dark[1];
-        	 Mat blue_std_d = color_std_dark[2];
+        	Scalar red_std_d = mean(color_std_dark[0]);
+        	Scalar green_std_d= mean(color_std_dark[1]);
+        	Scalar blue_std_d = mean(color_std_dark[2]);
 
-        	 Mat color_std_light[3];
-        	 split(stdWhite, color_std_light);
-        	 Mat red_std_l = color_std_light[0];
-        	 Mat green_std_l= color_std_light[1];
-             Mat blue_std_l = color_std_light[2];
+        	Mat color_std_light[3];
+        	split(stdWhite, color_std_light);
+
+        	Scalar red_std_l = mean(color_std_light[0]);
+        	Scalar green_std_l= mean(color_std_light[1]);
+        	Scalar blue_std_l = mean(color_std_light[2]);
 
              outputFile << red_std_d;
              outputFile << "\t";
