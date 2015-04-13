@@ -27,7 +27,7 @@ extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName, jstring nameWOExtension)
 	{
 
-		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "10");
+		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "11");
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
@@ -290,17 +290,17 @@ extern "C" {
         	Scalar green_std_l= mean(color_std_light[1]);
         	Scalar blue_std_l = mean(color_std_light[2]);
 
-             outputFile << red_std_d;
+             outputFile << red_std_d[0];
              outputFile << "\t";
-             outputFile << green_std_d;
+             outputFile << green_std_d[0];
              outputFile << "\t";
-             outputFile << blue_std_d;
+             outputFile << blue_std_d[0];
              outputFile << "\t";
-             outputFile << red_std_l;
+             outputFile << red_std_l[0];
              outputFile << "\t";
-             outputFile << green_std_l;
+             outputFile << green_std_l[0];
              outputFile << "\t";
-             outputFile << blue_std_l;
+             outputFile << blue_std_l[0];
              outputFile << "\n";
 
         }
@@ -366,7 +366,7 @@ extern "C" {
         // Save images
 		imwrite(name_second, original_image); // TODO
 
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done - 1!");
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done!");
 		return imagePath;
 	 }
 }
