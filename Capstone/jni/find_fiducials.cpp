@@ -27,7 +27,7 @@ extern "C" {
 	JNIEXPORT jstring JNICALL Java_washington_edu_capstone_ProcessImage_findCirclesNative(JNIEnv * env, jobject obj, jstring imagePath, jstring fileName, jstring nameWOExtension)
 	{
 
-		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "9");
+		__android_log_print(ANDROID_LOG_ERROR, "VERSION", "10");
 		// Get string in a format that we can use it
 		const char *nativeString = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName = env->GetStringUTFChars(fileName, 0);
