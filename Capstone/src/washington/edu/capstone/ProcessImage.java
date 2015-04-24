@@ -42,10 +42,7 @@ import android.support.v7.app.ActionBarActivity;
 import org.opencv.android.LoaderCallbackInterface; 
 
 //TODO Things to add :
-       // Error messages when they are problems 
-	   // Save data- from all three colums
-	   // 
-
+       // Error messages when they are problems  
 
 // File structure created: 
 // 		/storage/emulated/0/Diagnostics_Images is the primary folder with all of the content 

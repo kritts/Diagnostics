@@ -227,8 +227,8 @@ extern "C" {
         Mat copyOne;
         original_image.copyTo(copyOne);
 
-        // horizontal
-	 	rectangle( original_image, Point( 500, 100 ), Point( 600, 450 ), Scalar( 0, 55, 255 ), 3, 4 );
+        // horizontal  --> 100 / 350
+        rectangle( original_image, Point( 500, 150 ), Point( 600, 500 ), Scalar( 0, 55, 255 ), 3, 4 );
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v99", "Setting locations of rectangles");
 
@@ -236,22 +236,23 @@ extern "C" {
 		//rectangle( original_image, Point( 385, 30 ), Point( 415, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 		//rectangle( original_image, Point( 635, 30 ), Point( 665, 350 ), Scalar( 0, 55, 255 ), 1, 4 );
 
-		// color standard, dark
-		rectangle( original_image, Point( 270, 50 ), Point( 280, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
-		// color standard, white
-		rectangle( original_image, Point( 80, 50 ), Point( 90, 60 ), Scalar( 0, 55, 255 ), 1, 4 );
+		// color standard, dark  --> 10 / 10
+		rectangle( original_image, Point( 185, 200 ), Point( 190, 210 ), Scalar( 0, 55, 255 ), 1, 4 );
+
+		// color standard, white  // 190 to the right
+		rectangle( original_image, Point( 340, 200 ), Point( 350, 210 ), Scalar( 0, 55, 255 ), 1, 4 );
 
 		// dark color standard
-		Rect darkStd(Point(270, 50), Point(280, 60));
+		Rect darkStd(Point(185, 200 ), Point( 190, 210));
 		stdDark = stdDark(darkStd);
 
 		// white color standard
-		Rect whiteStd(Point( 80, 50 ), Point( 90, 60 ));
+		Rect whiteStd(Point( 340, 200 ), Point( 350, 210 ));
 		stdWhite = stdWhite(whiteStd);
 
 		// first test strip
- 		//Rect colorFirst(Point( 400, 150 ), Point( 450, 220 ));
-	 	//copyOne = copyOne(colorFirst);
+ 		Rect colorFirst(Point( 500, 150 ), Point( 600, 500 ));
+	 	copyOne = copyOne(colorFirst);
 
 
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
@@ -302,10 +303,7 @@ extern "C" {
              outputFile << "\t";
              outputFile << blue_std_l[0];
              outputFile << "\n";
-
         }
-
-
 
         // First test strip:  copyOne
         // Second test strip: copyTwo
@@ -366,7 +364,7 @@ extern "C" {
         // Save images
 		imwrite(name_second, original_image); // TODO
 
-		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done!");
+		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done - v2!");
 		return imagePath;
 	 }
 }
