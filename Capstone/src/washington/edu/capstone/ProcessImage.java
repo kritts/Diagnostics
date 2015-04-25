@@ -5,50 +5,36 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import android.util.Log; 
-
 import java.util.Arrays;  
-
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-
 import java.io.InputStream;
-
 import com.androidplot.xy.*; 
-
 import android.content.Intent; 
 import android.webkit.WebView;  
-
 import java.io.BufferedReader; 
-
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
-
 import java.io.FileInputStream; 
-
 import android.graphics.Bitmap;  
-
 import java.io.InputStreamReader;  
 import java.nio.channels.FileChannel;
-
 import org.opencv.android.OpenCVLoader;  
 import org.opencv.android.BaseLoaderCallback;  
-
 import android.support.v7.app.ActionBarActivity; 
-
 import org.opencv.android.LoaderCallbackInterface; 
 
-//TODO Things to add :
-       // Error messages when they are problems  
+// TODO: Error messages when they are problems  
 
 // File structure created: 
 // 		/storage/emulated/0/Diagnostics_Images is the primary folder with all of the content 
 //      /storage/emulated/0/Diagnostics_Images/ProcessedImages/*.jpg have processed images 
 // 	    /storage/emulated/0/Diagnostics_Images/ProcessedData/*.txt has data from the test strips 
 
+// TODO: Implement naming convention
 // Naming convention for images: 
 //      - Image taken on the device
 //			- .jpg	 -> 	MRSA_data_time.jpg
@@ -76,11 +62,10 @@ public class ProcessImage extends ActionBarActivity {
 	
 	/** C++ code to process image */
 	public native String findCirclesNative(String imagePath, String fileName, String nameWOExtension);
-	 
+	
+    /** Name of the image */ 
 	private String mFileName;
-	
-	private String mPathMoved;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +78,13 @@ public class ProcessImage extends ActionBarActivity {
 		Bundle extras = intent.getExtras();
 		path  = extras.getString("path"); 
 		resultCode = extras.getInt("resultCode");
-    
+   
+        // save the image in a place where we can find it later 
 		File src = new File(path);
 		mFileName = src.getName(); 
 		
-		File dest = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/Original_Images/" + src.getName());
+		File dest = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                             + "/Diagnostics_Images/Original_Images/" + src.getName());
 		
 		FileChannel source = null;
         FileChannel destination = null;
@@ -118,10 +105,10 @@ public class ProcessImage extends ActionBarActivity {
 		} catch (IOException e) { 
 			e.printStackTrace();
 		} 
-        
-        mPathMoved = dest.getAbsolutePath();
 	}
-	 
+	/** Given a bitmap and String representing a path, saves the 
+     *  image as png at that location 
+     */
 	private void storeImage(Bitmap image, String path) {
 	    File pictureFile = new File(path);
 	    try {
@@ -138,23 +125,15 @@ public class ProcessImage extends ActionBarActivity {
 	/** Called after OpenCV is initialized. Processes the chosen image if it is 
 	 *  a valid image */	
 	private void showImageAndPlot() {  
-		// mPathMoved --> path of the file 
-		Log.e(TAG, "path: " + mPathMoved);
-		
 		String folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Diagnostics_Images/";
-		 
-		boolean okay = true;
-		
-		
+		boolean okay = true; // TODO: change this to the returned value
 		
 		// Java native function - processes the image 
 		Log.e(TAG + "!", mFileName.substring(0, mFileName.lastIndexOf('.')));
 		String output_path = findCirclesNative(folder, mFileName, mFileName.substring(0, mFileName.lastIndexOf('.')));    
-		 
 		
 		if(okay) {
 			path = "/storage/sdcard0/Diagnostics_Images/Processed_Images/" + mFileName; 
-			
 			
 			String html =   "<html>"
 					        + "<body bgcolor=\"White\">" 

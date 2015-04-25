@@ -69,13 +69,16 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View arg) {  
 				Intent intent = new Intent(android.provider.
 										   MediaStore.ACTION_IMAGE_CAPTURE);
-				
+			    // process the image that the user took	
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, TAKE_PICTURE);
 			}  
 		}); 
     }
-    
+   
+    /** Set up file structure for the app in the phone's external storage 
+     *  directory 
+     */
     private void createFolderSetup() {
 		File diagnostics_imgs_folder = new File(
 				Environment.getExternalStorageDirectory(), "Diagnostics_Images");
@@ -114,6 +117,7 @@ public class MainActivity extends ActionBarActivity {
 							+ "/Diagnostics_Images/Original_Images/" + mImagePath;
 				} 
 				
+                // process the image that was just selected 
 				Intent intent = new Intent(MainActivity.this, ProcessImage.class);
 				intent.putExtra("resultCode", requestCode); 
 				intent.putExtra("path", selectedImagePath); 
