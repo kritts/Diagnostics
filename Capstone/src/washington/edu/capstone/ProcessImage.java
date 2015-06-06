@@ -1,6 +1,5 @@
 package washington.edu.capstone;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,14 +26,13 @@ import org.opencv.android.BaseLoaderCallback;
 import android.support.v7.app.ActionBarActivity; 
 import org.opencv.android.LoaderCallbackInterface; 
 
-// TODO: Error messages when they are problems  
+// TODO: Show the user an error messages when they are problems  
 
 // File structure created: 
 // 		/storage/emulated/0/Diagnostics_Images is the primary folder with all of the content 
 //      /storage/emulated/0/Diagnostics_Images/ProcessedImages/*.jpg have processed images 
 // 	    /storage/emulated/0/Diagnostics_Images/ProcessedData/*.txt has data from the test strips 
 
-// TODO: Implement naming convention
 // Naming convention for images: 
 //      - Image taken on the device
 //			- .jpg	 -> 	MRSA_data_time.jpg
@@ -157,26 +155,27 @@ public class ProcessImage extends ActionBarActivity {
 		} 
 	}
 
-	/**  */
+	/** Plot the data stored in the data file   */
 	private void plotData() {
 		String value;
 		try {
-			value = getStringFromFile("/storage/emulated/0/Output/output.txt"); // TODO
+            // TODO: Update this to the new file name 
+			value = getStringFromFile("/storage/emulated/0/Output/output.txt"); 
 		} catch (Exception e) { 
 			value = "";
 			Log.e(TAG, e.toString());
 			e.printStackTrace();
 		} 
-		 
+ 
 		String[] values = value.split("\n"); 
 		Number[] doubles = new Number[values.length];
-		
+
 		for (int i = 0; i < values.length; i++) {
 		    doubles[i] = Double.parseDouble(values[i]);
 		}
-		
+
 		Number[] series1Numbers = doubles; 
-		
+
 		XYPlot mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
 		mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
 
@@ -196,8 +195,8 @@ public class ProcessImage extends ActionBarActivity {
         mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE); 
         mySimpleXYPlot.getGraphWidget().getDomainOriginLinePaint().setColor(Color.BLACK);
         mySimpleXYPlot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.BLACK); 
-        // TODO - ask plot axis labels 
-        // TODO - get rid of legend 
+        // TODO: Plot axis labels 
+        // TODO: Get rid of legend 
 	}
 
 	// Given a string of a filepath returns the contens of the file as a string 

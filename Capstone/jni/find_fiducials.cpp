@@ -17,7 +17,6 @@
 #include <iostream>
 #include <vector>
 
-// Note the image is being rotated 360 degrees - not 90 at the moment
 using namespace std;
 using namespace cv;
 
@@ -59,8 +58,8 @@ extern "C" {
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Looked at green channel.");
 
 		// Cropping the image slightly
-		// TODO: Might have to update these
-		int originalX = cols / 8;
+		// These cropping parameters could be updated
+        int originalX = cols / 8;
 		int originalY = rows * 3 / 8;
 		int width = cols * 7 / 8 - originalX;
 		int height = rows * 3 / 4 - rows * 2 / 8;
@@ -123,7 +122,7 @@ extern "C" {
 		for (int j = 0; j < contours.size(); j++) {
 			area = contourArea(contours[j]);
 			approxPolyDP(contours[j], approx, 5, true);
-			// TODO: Should be changed
+			// Parameters can be  changed
 			if (area > 300 && area < 1500) {
 				__android_log_print(ANDROID_LOG_ERROR, "C++ Code - v5", "%f",  area);
 				Scalar color = Scalar(222, 20, 20);
@@ -254,7 +253,6 @@ extern "C" {
  		Rect colorFirst(Point( 500, 150 ), Point( 600, 500 ));
 	 	copyOne = copyOne(colorFirst);
 
-
         __android_log_print(ANDROID_LOG_ERROR, "C++ Code - v1", "Found locations of test strips.");
 
         // Create string for output text file
@@ -268,9 +266,8 @@ extern "C" {
         //Scalar avgDark = cv::mean(stdDark);
         //Scalar avgWhite = cv::mean(stdWhite);
 
-        // TODO: we can to look @ red color channel - not sure if this is acheiving what we want
         //double valDark = avgDark.val[0];
-        //double valWhite = avgWhite.val[1]; // TODO: is 0 red?
+        //double valWhite = avgWhite.val[1];
 
 		// Save to a .txt file
         ofstream outputFile;
@@ -316,10 +313,7 @@ extern "C" {
     	   	Mat red_channel_one = channel_one[0];
     	   	Mat green_channel_one = channel_one[1];
     	   	Mat blue_channel_one = channel_one[2];
-
-    	   	// to do
-    	   	// print 0%, 33%, and 66%
-
+ 
         	double red_one = 0.0;
         	double green_one = 0.0;
         	double blue_one = 0.0;
@@ -351,7 +345,6 @@ extern "C" {
 
         outputFile.close();
 
-
 		const char *nativeString_2 = env->GetStringUTFChars(imagePath, 0);
 		const char *nativeName_2 = env->GetStringUTFChars(fileName, 0);
 
@@ -362,7 +355,7 @@ extern "C" {
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "%s", name_second.c_str());
         // Save images
-		imwrite(name_second, original_image); // TODO
+		imwrite(name_second, original_image);
 
 		__android_log_print(ANDROID_LOG_ERROR, "C++ Code", "Done - v2!");
 		return imagePath;
